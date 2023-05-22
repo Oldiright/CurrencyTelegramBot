@@ -3,6 +3,7 @@ package currency.mono;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import currency.BankAPI;
 import currency.Currency;
 import currency.CurrencyService;
 import currency.mono.dto.MonoBankCurrencyItem;
@@ -12,15 +13,15 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class MonoBankCurrencyService implements CurrencyService {
-    private final static String url = "https://api.monobank.ua/bank/currency";
+
     private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    List<MonoBankCurrencyItem> list;
+    private List<MonoBankCurrencyItem> list;
 
     private void getExchangeRates(){
         String rates;
         try {
-            rates = Jsoup.connect(url)
+            rates = Jsoup.connect(BankAPI.MONO)
                     .ignoreContentType(true)
                     .get()
                     .text();
@@ -54,6 +55,6 @@ public class MonoBankCurrencyService implements CurrencyService {
                 .findFirst().orElse(-1d);
 
     }
-    
+
 }
 
