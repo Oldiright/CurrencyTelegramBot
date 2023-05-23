@@ -62,7 +62,6 @@ public class MonoBankCurrencyService implements CurrencyService {
                 .filter(it -> it.getBaseCurrency() == Currency.UAH)
                 .map(MonoBankCurrencyItem::getRateSell)
                 .findFirst().orElse(-1d);
-
     }
 
     //Выполняет проверку времени прошедшего с момента первого запроса к MonoBank API, если запроса не было,
