@@ -27,16 +27,16 @@ public class StartCommand extends BotCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 
 
-        String text = "ÐÐ°ÑÐºÐ°Ð²Ð¾ Ð¿ÑÐ¾ÑÐ¸Ð¼Ð¾. Ð¦ÐµÐ¹ Ð±Ð¾Ñ Ð´Ð¾Ð¿Ð¾Ð¼Ð¾Ð¶Ðµ Ð²ÑÐ´ÑÐ»ÑÐ´ÐºÐ¾Ð²ÑÐ²Ð°ÑÐ¸ Ð°ÐºÑÑÐ°Ð»ÑÐ½Ñ ÐºÑÑÑÐ¸ Ð²Ð°Ð»ÑÑ";
+        String text = "Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.";
 
         SendMessage message = new SendMessage();
         message.setText(new String(text.getBytes(), StandardCharsets.UTF_8));
 
         message.setChatId(Long.toString(chat.getId()));
 
-        InlineKeyboardButton updateInfo = createButton("ÐÑÑÐ¸Ð¼Ð°ÑÐ¸ ÑÐ½ÑÐ¾", "Get info");
+        InlineKeyboardButton updateInfo = createButton("Отримати інфо", "Get info");
 
-        InlineKeyboardButton settings = createButton("ÐÐ°Ð»Ð°ÑÑÑÐ²Ð°Ð½Ð½Ñ", "Settings");
+        InlineKeyboardButton settings = createButton("Налаштування", "Settings");
 
         ArrayList<InlineKeyboardButton> buttons = new ArrayList<>();
         buttons.add(updateInfo);
