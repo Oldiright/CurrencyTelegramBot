@@ -10,9 +10,11 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.nio.charset.StandardCharsets;
+
 import java.util.ArrayList;
 
 import java.util.Collections;
+
 
 
 public class StartCommand extends BotCommand {
@@ -24,16 +26,17 @@ public class StartCommand extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 
-        String text = "Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют";
+
+        String text = "ÐÐ°ÑÐºÐ°Ð²Ð¾ Ð¿ÑÐ¾ÑÐ¸Ð¼Ð¾. Ð¦ÐµÐ¹ Ð±Ð¾Ñ Ð´Ð¾Ð¿Ð¾Ð¼Ð¾Ð¶Ðµ Ð²ÑÐ´ÑÐ»ÑÐ´ÐºÐ¾Ð²ÑÐ²Ð°ÑÐ¸ Ð°ÐºÑÑÐ°Ð»ÑÐ½Ñ ÐºÑÑÑÐ¸ Ð²Ð°Ð»ÑÑ";
 
         SendMessage message = new SendMessage();
         message.setText(new String(text.getBytes(), StandardCharsets.UTF_8));
 
         message.setChatId(Long.toString(chat.getId()));
 
-        InlineKeyboardButton updateInfo = createButton("Отримати інфо", "Get info");
+        InlineKeyboardButton updateInfo = createButton("ÐÑÑÐ¸Ð¼Ð°ÑÐ¸ ÑÐ½ÑÐ¾", "Get info");
 
-        InlineKeyboardButton settings = createButton("Налаштування", "Settings");
+        InlineKeyboardButton settings = createButton("ÐÐ°Ð»Ð°ÑÑÑÐ²Ð°Ð½Ð½Ñ", "Settings");
 
         ArrayList<InlineKeyboardButton> buttons = new ArrayList<>();
         buttons.add(updateInfo);
@@ -48,6 +51,7 @@ public class StartCommand extends BotCommand {
 
         try {
             absSender.execute(message);
+
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
@@ -62,5 +66,6 @@ public class StartCommand extends BotCommand {
                 .build();
 
     }
+
 
 }

@@ -1,5 +1,6 @@
 package telegram;
 
+
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -20,10 +21,12 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
 
     }
+
     @Override
     public String getBotUsername() {
         return BotConstants.BOT_NAME;
     }
+
     @Override
     public String getBotToken() {
 
@@ -55,6 +58,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
     public String getCallbackQueryData(Update update) {
         return update.getCallbackQuery().getData();
     }
+
 
 
 
