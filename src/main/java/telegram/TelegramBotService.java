@@ -5,7 +5,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 public class TelegramBotService {
-    CurrencyTelegramBot  currencyTelegramBot;
+    CurrencyTelegramBot currencyTelegramBot;
     public TelegramBotService() {
         currencyTelegramBot = new CurrencyTelegramBot();
 
