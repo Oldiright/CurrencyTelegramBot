@@ -24,21 +24,14 @@ public class Settings {
             String[] callbackQueryText = CALLBACK_QUERY_TEXT_SETTINGS.clone();
             String[] callbackQueryData = CALLBACK_QUERY_DATA_SETTINGS.clone();
 
-            ArrayList<InlineKeyboardButton> numberOfDecimalPlaces = Utils.createButtonForColumnsKeyboard(callbackQueryText[0], callbackQueryData[0]);
-
-            ArrayList<InlineKeyboardButton> bank = Utils.createButtonForColumnsKeyboard(callbackQueryText[1], callbackQueryData[1]);
-
-            ArrayList<InlineKeyboardButton> currency = Utils.createButtonForColumnsKeyboard(callbackQueryText[2], callbackQueryData[2]);
-
-            ArrayList<InlineKeyboardButton> alertTimes = Utils.createButtonForColumnsKeyboard(callbackQueryText[3], callbackQueryData[3]);
-
             ArrayList<ArrayList<InlineKeyboardButton>> buttons = new ArrayList<>();
-            buttons.add(numberOfDecimalPlaces);
-            buttons.add(bank);
-            buttons.add(currency);
-            buttons.add(alertTimes);
-            InlineKeyboardMarkup keyboard;
-            keyboard = Utils.createColumnsKeyboard(buttons);
+
+            for(int i = 0; i < callbackQueryData.length; i++) {
+                ArrayList<InlineKeyboardButton> settingsItem = Utils.createButtonForColumnsKeyboard(callbackQueryText[i], callbackQueryData[i]);
+                buttons.add(settingsItem);
+            }
+
+            InlineKeyboardMarkup keyboard = Utils.createColumnsKeyboard(buttons);
             message.setReplyMarkup(keyboard);
 
             return message;
@@ -48,6 +41,7 @@ public class Settings {
             return NumberOfDecimalPlaces.settingsNumberOfDecimalPlacesMessage(update, chatId,userSettings);
 
         } else {
+
             return SendMessage.builder().text("TEST").build();
         }
 

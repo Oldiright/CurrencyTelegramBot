@@ -8,17 +8,12 @@ import telegram.commands.StartCommand;
 import telegram.settings.Settings;
 import telegram.settings.utils.Utils;
 
-
-
 public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
-
 
     UserSettings userSettings = new UserSettings();
 
-
     CurrencyTelegramBot() {
         register(new StartCommand());
-
 
     }
 
@@ -43,16 +38,18 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
         if(update.hasCallbackQuery()) {
             System.out.println(getCallbackQueryData(update));
+
+            if(getCallbackQueryData(update).contains("Settings")) {
+
+                SendMessage sendMessage = Settings.settingsMessage(update, chatId, userSettings);
+
+                sendApiMethodAsync(sendMessage);
+
+            }
         }
 
 
-        if(update.hasCallbackQuery() & getCallbackQueryData(update).contains("Settings")) {
 
-            SendMessage sendMessage = Settings.settingsMessage(update, chatId, userSettings);
-
-            sendApiMethodAsync(sendMessage);
-
-        }
     }
 
     public String getCallbackQueryData(Update update) {

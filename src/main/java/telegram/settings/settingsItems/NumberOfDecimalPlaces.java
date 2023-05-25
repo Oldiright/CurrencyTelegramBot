@@ -11,9 +11,9 @@ import java.util.ArrayList;
 public class NumberOfDecimalPlaces {
 
     public static final String TITLE ="Settings_Number_of_decimal_places";
-    private static final String[] CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES =new String[]{"Settings_Number_of_decimal_places_2","Settings_Number_of_decimal_places_3", "Settings_Number_of_decimal_places_4"};
+    private static final String[] CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES =new String[]{"Settings_Number_of_decimal_places_2","Settings_Number_of_decimal_places_3", "Settings_Number_of_decimal_places_4", "Settings"};
     private static final String FIRST_MESSAGE_TEXT ="Оберіть кількість знаків після коми:";
-    private static final String[] CALLBACK_QUERY_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES = new String[]{"2", "3", "4"};
+    private static final String[] CALLBACK_QUERY_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES = new String[]{"2", "3", "4", "До меню налаштувань"};
 
 
     public static SendMessage settingsNumberOfDecimalPlacesMessage(Update update, Long chatId, UserSettings userSettings) {
@@ -50,29 +50,17 @@ public class NumberOfDecimalPlaces {
 
     public static ArrayList<ArrayList<InlineKeyboardButton>> getButtonsForSettingsNumberOfDecimalPlaces(UserSettings userSettings) {
 
-        ArrayList<InlineKeyboardButton> twoNumberOfDecimalPlaces;
-        ArrayList<InlineKeyboardButton> threeNumberOfDecimalPlaces;
-        ArrayList<InlineKeyboardButton> fourNumberOfDecimalPlaces;
-        ArrayList<InlineKeyboardButton> settings;
-
         String[] buttonText = CALLBACK_QUERY_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES.clone();
         String[] buttonCallbackData = CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES.clone();
 
         buttonText[userSettings.getNumberOfDecimalPlaces() - 2] = "✔️" + userSettings.getNumberOfDecimalPlaces();
 
-        twoNumberOfDecimalPlaces = Utils.createButtonForColumnsKeyboard(buttonText[0], buttonCallbackData[0]);
-
-        threeNumberOfDecimalPlaces = Utils.createButtonForColumnsKeyboard(buttonText[1], buttonCallbackData[1]);
-
-        fourNumberOfDecimalPlaces = Utils.createButtonForColumnsKeyboard(buttonText[2], buttonCallbackData[2]);
-
-        settings = Utils.createButtonForColumnsKeyboard("До меню налаштувань", "Settings");
-
         ArrayList<ArrayList<InlineKeyboardButton>> buttons = new ArrayList<>();
-        buttons.add(twoNumberOfDecimalPlaces);
-        buttons.add(threeNumberOfDecimalPlaces);
-        buttons.add(fourNumberOfDecimalPlaces);
-        buttons.add(settings);
+
+        for(int i = 0; i < buttonText.length; i++) {
+            ArrayList<InlineKeyboardButton> NumberOfDecimalPlaces = Utils.createButtonForColumnsKeyboard(buttonText[i], buttonCallbackData[i]);
+            buttons.add(NumberOfDecimalPlaces);
+        }
 
         return buttons;
     }
