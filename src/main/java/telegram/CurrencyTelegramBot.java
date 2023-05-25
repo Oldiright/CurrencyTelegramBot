@@ -46,6 +46,18 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
                 sendApiMethodAsync(sendMessage);
 
             }
+
+            if(getCallbackQueryData(update).contains("Get Info")) {
+
+                // отримання інформації
+
+                SendMessage sendMessage = new SendMessage(); /*заглушка*/
+
+                sendApiMethodAsync(sendMessage);
+
+            }
+
+
         }
 
 

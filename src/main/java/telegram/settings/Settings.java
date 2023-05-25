@@ -36,14 +36,31 @@ public class Settings {
 
             return message;
 
-        } else if(update.getCallbackQuery().getData().contains("Settings_Number_of_decimal_places")) {
+        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[0])) {
 
+            //Кількість знаків після коми
             return NumberOfDecimalPlaces.settingsNumberOfDecimalPlacesMessage(update, chatId,userSettings);
 
-        } else {
+        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[1])) {
 
-            return SendMessage.builder().text("TEST").build();
+            //Банк
+            return SendMessage.builder().text("TEST").build();  /* заглушка */
+
+        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[2])) {
+
+            //Валюти
+
+            return SendMessage.builder().text("TEST").build();  /* заглушка */
+
+
+        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[3])) {
+
+            //Час оповіщень
+
+            return SendMessage.builder().text("TEST").build(); /* заглушка */
         }
+
+        return SendMessage.builder().text("TEST").build();  /* заглушка */
 
     }
 
