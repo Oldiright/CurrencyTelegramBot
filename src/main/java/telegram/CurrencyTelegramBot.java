@@ -6,9 +6,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.commands.StartCommand;
 import telegram.settings.Settings;
+import telegram.settings.settingsItems.AlertTimesSettings;
 import telegram.settings.utils.Utils;
 
 public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
+
 
     UserSettings userSettings = new UserSettings();
 
@@ -32,11 +34,15 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
     @Override
     public void processNonCommandUpdate(Update update) {
 
-        Long chatId = Utils.getChatId(update);
-        System.out.println(chatId);
+
+
+
+
 
 
         if(update.hasCallbackQuery()) {
+            Long chatId = update.getCallbackQuery().getFrom().getId();
+            System.out.println(chatId);
             System.out.println(getCallbackQueryData(update));
 
             if(getCallbackQueryData(update).contains("Settings")) {
@@ -57,8 +63,13 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
             }
 
-
         }
+
+        if (update.hasMessage()){
+            sendApiMethodAsync(Settings.messageHandler(update, update.getMessage().getFrom().getId(), userSettings));
+        }
+
+
 
 
 
