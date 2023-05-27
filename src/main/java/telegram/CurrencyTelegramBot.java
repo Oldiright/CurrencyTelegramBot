@@ -35,13 +35,8 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
     public void processNonCommandUpdate(Update update) {
 
 
-
-
-
-
-
+        Long chatId = Utils.getChatId(update);
         if(update.hasCallbackQuery()) {
-            Long chatId = update.getCallbackQuery().getFrom().getId();
             System.out.println(chatId);
             System.out.println(getCallbackQueryData(update));
 

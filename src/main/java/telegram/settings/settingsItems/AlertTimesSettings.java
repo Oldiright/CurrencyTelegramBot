@@ -16,14 +16,14 @@ public class AlertTimesSettings {
     private static ReplyKeyboardMarkup createKeyboard(){
         List<KeyboardRow> keyboards = new ArrayList<>();
         for (int i = 9; ; ) {
-            int end = ((i + 4) > 19) ? (i + (19 - i)) : (i + 4);
+            int end = ((i + 3) > 19) ? (i + (19 - i)) : (i + 3);
             keyboards.add(createKeyboardLine(i, end));
             i = end;
             if(end == 19) {
                 break;
             }
         }
-
+        keyboards.get(keyboards.size() - 1).add("Вимкнути сповіщення");
         ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
         keyboard.setOneTimeKeyboard(true);
         keyboard.setKeyboard(keyboards);

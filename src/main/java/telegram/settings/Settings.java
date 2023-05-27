@@ -3,6 +3,7 @@ package telegram.settings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import telegram.UserSettings;
 import telegram.settings.settingsItems.AlertTimesSettings;
@@ -78,8 +79,15 @@ public class Settings {
                 message.setText(text);
                 return message;
             }
-        }catch (Exception e){
+        }catch (NumberFormatException e){
+            if(inputMessage.equals("Вимкнути сповіщення")){
+                text = "Автоматичну розсилку сповіщень вимкнемо. Ви завжди можете змінити це в налаштуваннях.";
+                user.setNeedAlertTimes(false);
+            }
             message.setText(text);
+            ReplyKeyboardRemove delete = new ReplyKeyboardRemove();
+            delete.setRemoveKeyboard(true);
+            message.setReplyMarkup(delete);
             return message;
         }
 
@@ -87,6 +95,9 @@ public class Settings {
         text = "Час сповіщень встановлено на: " + user.getAlertTimes() + ":00";
         message = new SendMessage();
         message.setText(text);
+        ReplyKeyboardRemove delete = new ReplyKeyboardRemove();
+        delete.setRemoveKeyboard(true);
+        message.setReplyMarkup(delete);
         message.setChatId(chatId);
         return message;
 
