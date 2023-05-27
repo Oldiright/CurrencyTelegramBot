@@ -30,7 +30,7 @@ public class StartCommand extends BotCommand {
         String text = "Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.";
 
         SendMessage message = new SendMessage();
-        message.setText(new String(text.getBytes(), StandardCharsets.UTF_8));
+        message.setText(text);
 
         message.setChatId(Long.toString(chat.getId()));
 
@@ -61,7 +61,7 @@ public class StartCommand extends BotCommand {
     public static InlineKeyboardButton createButton(String text, String callBackData) {
         return InlineKeyboardButton
                 .builder()
-                .text(new String(text.getBytes(), StandardCharsets.UTF_8))
+                .text(new String(text))
                 .callbackData(callBackData)
                 .build();
 

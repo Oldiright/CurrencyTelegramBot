@@ -12,7 +12,7 @@ public class Utils {
 
     public static SendMessage createMessage(String text, Long chatId) {
         SendMessage message = new SendMessage();
-        message.setText(new String(text.getBytes(), StandardCharsets.UTF_8));
+        message.setText(text);
         message.setChatId(chatId);
         return message;
     }
@@ -20,7 +20,7 @@ public class Utils {
     public static ArrayList<InlineKeyboardButton> createButtonForColumnsKeyboard(String text, String callBackData) {
         InlineKeyboardButton button = InlineKeyboardButton
                 .builder()
-                .text(new String(text.getBytes(), StandardCharsets.UTF_8))
+                .text(text)
                 .callbackData(callBackData)
                 .build();
         ArrayList<InlineKeyboardButton> result = new ArrayList<>();

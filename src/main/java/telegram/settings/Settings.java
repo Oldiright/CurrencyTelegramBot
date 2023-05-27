@@ -3,8 +3,10 @@ package telegram.settings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import telegram.UserSettings;
+import telegram.settings.settingsItems.AlertTimesSettings;
 import telegram.settings.settingsItems.NumberOfDecimalPlaces;
 import telegram.settings.utils.Utils;
 import java.util.ArrayList;
@@ -56,11 +58,48 @@ public class Settings {
         } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[3])) {
 
             //Час оповіщень
-
-            return SendMessage.builder().text("TEST").build(); /* заглушка */
+            return AlertTimesSettings.settingsAlertTimeAlertTimesMessage(update,chatId,userSettings);
+            //return SendMessage.builder().text("TEST").build(); /* заглушка */
         }
 
         return SendMessage.builder().text("TEST").build();  /* заглушка */
+
+    }
+
+    public static SendMessage messageHandler(Update update, long chatId, UserSettings user){
+        SendMessage message = AlertTimesSettings.settingsAlertTimeAlertTimesMessage(update, chatId, user);
+        String text = "Ви ввели не коректні данні, для збереження коректних налаштувань, скористайтесь клавіатурою нижче:";
+        String inputMessage = update.getMessage().getText();
+
+        int isInt;
+        try {
+            isInt = Integer.parseInt(inputMessage);
+            if (isInt < 9 || isInt > 18){
+                text = "Нажаль в обраний вами час банки не працюють. Оберіть час з клавіатури нижче:";
+                message.setText(text);
+                return message;
+            }
+        }catch (NumberFormatException e){
+            if(inputMessage.equals("Вимкнути сповіщення")){
+                text = "Автоматичну розсилку сповіщень вимкнемо. Ви завжди можете змінити це в налаштуваннях.";
+                user.setNeedAlertTimes(false);
+            }
+            message.setText(text);
+            ReplyKeyboardRemove delete = new ReplyKeyboardRemove();
+            delete.setRemoveKeyboard(true);
+            message.setReplyMarkup(delete);
+            return message;
+        }
+
+        user.setAlertTimes(inputMessage);
+        text = "Час сповіщень встановлено на: " + user.getAlertTimes() + ":00";
+        message = new SendMessage();
+        message.setText(text);
+        ReplyKeyboardRemove delete = new ReplyKeyboardRemove();
+        delete.setRemoveKeyboard(true);
+        message.setReplyMarkup(delete);
+        message.setChatId(chatId);
+        return message;
 
     }
 

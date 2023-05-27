@@ -9,6 +9,7 @@ public class UserSettings {
     private boolean euro;
     private boolean usd;
     private String alertTimes;
+    boolean needAlertTimes;
 
 
     public UserSettings() {
@@ -17,6 +18,7 @@ public class UserSettings {
         euro = true;
         usd = true;
         alertTimes = null;
+        needAlertTimes = true;
 
 
 
