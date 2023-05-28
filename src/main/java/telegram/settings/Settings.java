@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import telegram.UserSettings;
 import telegram.settings.settingsItems.AlertTimesSettings;
+import telegram.settings.settingsItems.BankSettings;
 import telegram.settings.settingsItems.NumberOfDecimalPlaces;
 import telegram.settings.utils.Utils;
 import java.util.ArrayList;
@@ -44,9 +45,13 @@ public class Settings {
             return NumberOfDecimalPlaces.settingsNumberOfDecimalPlacesMessage(update, chatId,userSettings);
 
         } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[1])) {
-
+            if(update.getCallbackQuery().getData().contains("NBU")
+                    || update.getCallbackQuery().getData().contains("Mono")
+                    || update.getCallbackQuery().getData().contains("Privat")){
+                userSettings.setBankName(update.getCallbackQuery().getData().replaceAll("Settings_Bank_", ""));
+            }
             //Банк
-            return SendMessage.builder().text("TEST").build();  /* заглушка */
+            return BankSettings.settingsBankMessage(update, chatId, userSettings);
 
         } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[2])) {
 
