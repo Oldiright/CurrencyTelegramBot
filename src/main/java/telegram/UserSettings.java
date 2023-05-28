@@ -4,12 +4,13 @@ import lombok.Data;
 
 @Data
 public class UserSettings {
+    private long chatId;
     private int NumberOfDecimalPlaces;
     private String bankName;
     private boolean euro;
     private boolean usd;
     private String alertTimes;
-    boolean needAlertTimes;
+    private boolean needAlertTimes;
 
 
     public UserSettings() {
