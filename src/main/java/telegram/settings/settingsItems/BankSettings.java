@@ -27,7 +27,7 @@ public class BankSettings {
                 .map(s -> Utils.createButtonForColumnsKeyboard(s, "Settings_Bank_" + s.replaceAll("✔️", "")))
                 .forEach(buttons::add);
 
-                buttons.add(Utils.createButtonForColumnsKeyboard("До налаштувань", "Settings"));
+                buttons.add(Utils.createButtonForColumnsKeyboard("До меню налаштувань", "Settings"));
 
         InlineKeyboardMarkup keyboard = Utils.createColumnsKeyboard(buttons);
         SendMessage message = Utils.createMessage(text, chatId);

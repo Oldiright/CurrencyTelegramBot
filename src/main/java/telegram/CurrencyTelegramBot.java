@@ -25,13 +25,13 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
     @Override
     public String getBotUsername() {
-//        return BotConstants.BOT_NAME;
+
         return new BotConstants().botInit().getBotName();
     }
 
     @Override
     public String getBotToken() {
-//        return BotConstants.BOT_TOKEN;
+
         return new BotConstants().botInit().getBotToken();
     }
 
@@ -66,6 +66,16 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
                 sendApiMethodAsync(sendMessage);
 
+            }
+
+            if(getCallbackQueryData(update).equals("To Start")) {
+                SendMessage sendMessage = SendMessage
+                        .builder()
+                        .chatId(chatId)
+                        .text("Головне меню")
+                        .replyMarkup(Utils.getGeneralMenuKeyboard())
+                        .build();
+                sendApiMethodAsync(sendMessage);
 
             }
 

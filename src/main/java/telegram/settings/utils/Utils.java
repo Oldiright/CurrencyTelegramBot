@@ -4,9 +4,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Utils {
 
@@ -30,6 +29,16 @@ public class Utils {
 
     }
 
+    public static InlineKeyboardButton createButtonForLinerKeyboard(String text, String callBackData) {
+
+        return InlineKeyboardButton
+                .builder()
+                .text(text)
+                .callbackData(callBackData)
+                .build();
+
+    }
+
     public static InlineKeyboardMarkup createColumnsKeyboard(ArrayList<ArrayList<InlineKeyboardButton>> buttons) {
         return InlineKeyboardMarkup
                 .builder()
@@ -48,5 +57,20 @@ public class Utils {
         }
 
         return null;
+    }
+
+    public static InlineKeyboardMarkup getGeneralMenuKeyboard() {
+        InlineKeyboardButton updateInfo = createButtonForLinerKeyboard("Отримати інфо", "Get Info");
+
+        InlineKeyboardButton settings = createButtonForLinerKeyboard("Налаштування", "Settings");
+
+        ArrayList<InlineKeyboardButton> buttons = new ArrayList<>();
+        buttons.add(updateInfo);
+        buttons.add(settings);
+
+    return InlineKeyboardMarkup
+            .builder()
+            .keyboard(Collections.singletonList(buttons))
+            .build();
     }
 }

@@ -4,15 +4,9 @@ import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import java.util.ArrayList;
-
-import java.util.Collections;
-
-
+import telegram.settings.utils.Utils;
 
 public class StartCommand extends BotCommand {
 
@@ -31,20 +25,7 @@ public class StartCommand extends BotCommand {
 
         message.setChatId(Long.toString(chat.getId()));
 
-        InlineKeyboardButton updateInfo = createButton("Отримати інфо", "Get Info");
-
-        InlineKeyboardButton settings = createButton("Налаштування", "Settings");
-
-        ArrayList<InlineKeyboardButton> buttons = new ArrayList<>();
-        buttons.add(updateInfo);
-        buttons.add(settings);
-
-        InlineKeyboardMarkup keyboard = InlineKeyboardMarkup
-                .builder()
-                .keyboard(Collections.singletonList(buttons))
-                .build();
-
-        message.setReplyMarkup(keyboard);
+        message.setReplyMarkup(Utils.getGeneralMenuKeyboard());
 
         try {
             absSender.execute(message);
@@ -54,15 +35,5 @@ public class StartCommand extends BotCommand {
         }
 
     }
-
-    public static InlineKeyboardButton createButton(String text, String callBackData) {
-        return InlineKeyboardButton
-                .builder()
-                .text(text)
-                .callbackData(callBackData)
-                .build();
-
-    }
-
 
 }

@@ -18,9 +18,9 @@ import java.util.HashMap;
 public class Settings {
 
     public static final String TITLE ="Settings";
-    private static final String[] CALLBACK_QUERY_DATA_SETTINGS =new String[]{"Settings_Number_of_decimal_places","Settings_Bank", "Settings_Currency", "Settings_Alert_times"};
+    private static final String[] CALLBACK_QUERY_DATA_SETTINGS =new String[]{"Settings_Number_of_decimal_places","Settings_Bank", "Settings_Currency", "Settings_Alert_times","To Start"};
      private static final String FIRST_MESSAGE_TEXT ="Налаштування";
-    private static final String[] CALLBACK_QUERY_TEXT_SETTINGS = new String[]{"Кількість знаків після коми", "Банк", "Валюти", "Час оповіщень"};
+    private static final String[] CALLBACK_QUERY_TEXT_SETTINGS = new String[]{"Кількість знаків після коми", "Банк", "Валюти", "Час оповіщень", "До головного меню"};
 
 
     public static SendMessage settingsMessage(Update update, Long chatId, UserSettings userSettings) {
@@ -74,6 +74,7 @@ public class Settings {
         SendMessage message = AlertTimesSettings.settingsAlertTimeAlertTimesMessage(update, chatId, user);
         String text = "Ви ввели не коректні данні, для збереження коректних налаштувань, якщо ви налаштовуєте регулярні сповіщення, скористайтесь клавіатурою нижче:";
         String inputMessage = update.getMessage().getText();
+
 
         int isInt;
 
