@@ -5,6 +5,7 @@ import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingC
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.commands.StartCommand;
+import telegram.scheduler.AlertScheduler;
 import telegram.settings.Settings;
 import telegram.settings.utils.Utils;
 
@@ -12,10 +13,12 @@ import java.util.HashMap;
 
 public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
-
+    AlertScheduler alertScheduler;
     HashMap<Long, UserSettings> userSettings = new HashMap<>();
 
-    CurrencyTelegramBot() {
+    CurrencyTelegramBot(AlertScheduler alertScheduler) {
+        this.alertScheduler = alertScheduler;
+
         register(new StartCommand());
 
     }
@@ -40,7 +43,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
         Long chatId = Utils.getChatId(update);
         if(!userSettings.containsKey(chatId)) {
             userSettings.put(chatId, new UserSettings());
-            userSettings.get(chatId).setChatId(chatId);
+
         }
 
         if(update.hasCallbackQuery()) {
@@ -69,7 +72,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
         }
 
         if (update.hasMessage()){
-            sendApiMethodAsync(Settings.messageHandler(update, update.getMessage().getFrom().getId(), userSettings.get(chatId)));
+            sendApiMethodAsync(Settings.messageHandler(update, update.getMessage().getFrom().getId(), userSettings.get(chatId), alertScheduler));
         }
 
 

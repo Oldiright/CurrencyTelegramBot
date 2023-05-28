@@ -13,6 +13,12 @@ import java.util.stream.Stream;
 public class BankSettings {
 
     public static SendMessage settingsBankMessage(Update update, Long chatId, UserSettings userSettings){
+        if(update.getCallbackQuery().getData().contains("NBU")
+                || update.getCallbackQuery().getData().contains("Mono")
+                || update.getCallbackQuery().getData().contains("Privat")){
+            userSettings.setBankName(update.getCallbackQuery().getData().replaceAll("Settings_Bank_", ""));
+        }
+
         String text = "Оберіть банк:";
         ArrayList<ArrayList<InlineKeyboardButton>> buttons =  new ArrayList<>();
                 Stream.of("NBU", "Privat", "Mono")

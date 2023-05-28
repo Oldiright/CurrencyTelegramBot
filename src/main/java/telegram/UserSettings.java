@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserSettings {
-    private long chatId;
+
     private int NumberOfDecimalPlaces;
     private String bankName;
     private boolean euro;
@@ -19,7 +19,7 @@ public class UserSettings {
         euro = true;
         usd = true;
         alertTimes = null;
-        needAlertTimes = true;
+        needAlertTimes = false;
 
 
 

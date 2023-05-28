@@ -13,7 +13,7 @@ public class NumberOfDecimalPlaces {
     public static final String TITLE ="Settings_Number_of_decimal_places";
     private static final String[] CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES =new String[]{"Settings_Number_of_decimal_places_2","Settings_Number_of_decimal_places_3", "Settings_Number_of_decimal_places_4", "Settings"};
     private static final String FIRST_MESSAGE_TEXT ="Оберіть кількість знаків після коми:";
-    private static final String[] CALLBACK_QUERY_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES = new String[]{"2", "3", "4", "До меню налаштувань"};
+    private static final String[] BUTTON_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES = new String[]{"2", "3", "4", "До меню налаштувань"};
 
 
     public static SendMessage settingsNumberOfDecimalPlacesMessage(Update update, Long chatId, UserSettings userSettings) {
@@ -50,7 +50,7 @@ public class NumberOfDecimalPlaces {
 
     public static ArrayList<ArrayList<InlineKeyboardButton>> getButtonsForSettingsNumberOfDecimalPlaces(UserSettings userSettings) {
 
-        String[] buttonText = CALLBACK_QUERY_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES.clone();
+        String[] buttonText = BUTTON_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES.clone();
         String[] buttonCallbackData = CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES.clone();
 
         buttonText[userSettings.getNumberOfDecimalPlaces() - 2] = "✔️" + userSettings.getNumberOfDecimalPlaces();
