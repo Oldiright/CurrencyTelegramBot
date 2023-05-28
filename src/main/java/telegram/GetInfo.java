@@ -10,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import telegram.settings.utils.Utils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -98,7 +97,7 @@ public class GetInfo {
             message = Utils.createMessage(text, chatId);
 
             InlineKeyboardButton toStart = InlineKeyboardButton.builder()
-                    .text(new String(MESSAGE_TO_START.getBytes(), StandardCharsets.UTF_8))
+                    .text(MESSAGE_TO_START)
                     .callbackData("To Start")
                     .build();
 

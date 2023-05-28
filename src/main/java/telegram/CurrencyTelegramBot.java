@@ -6,13 +6,14 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.commands.StartCommand;
 import telegram.settings.Settings;
-import telegram.settings.settingsItems.AlertTimesSettings;
 import telegram.settings.utils.Utils;
+
+import java.util.HashMap;
 
 public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
 
-    UserSettings userSettings = new UserSettings();
+    HashMap<Long, UserSettings> userSettings = new HashMap<>();
 
     CurrencyTelegramBot() {
         register(new StartCommand());
@@ -36,13 +37,18 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
 
         Long chatId = Utils.getChatId(update);
+        if(!userSettings.containsKey(chatId)) {
+            userSettings.put(chatId, new UserSettings());
+            userSettings.get(chatId).setChatId(chatId);
+        }
+
         if(update.hasCallbackQuery()) {
             System.out.println(chatId);
             System.out.println(getCallbackQueryData(update));
 
             if(getCallbackQueryData(update).contains("Settings")) {
 
-                SendMessage sendMessage = Settings.settingsMessage(update, chatId, userSettings);
+                SendMessage sendMessage = Settings.settingsMessage(update, chatId, userSettings.get(chatId));
 
                 sendApiMethodAsync(sendMessage);
 
@@ -52,16 +58,17 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
                 // отримання інформації
 
-                SendMessage sendMessage = new SendMessage(); /*заглушка*/
+                SendMessage sendMessage = GetInfo.infoMessage(update, chatId, userSettings.get(chatId));
 
                 sendApiMethodAsync(sendMessage);
+
 
             }
 
         }
 
         if (update.hasMessage()){
-            sendApiMethodAsync(Settings.messageHandler(update, update.getMessage().getFrom().getId(), userSettings));
+            sendApiMethodAsync(Settings.messageHandler(update, update.getMessage().getFrom().getId(), userSettings.get(chatId)));
         }
 
 

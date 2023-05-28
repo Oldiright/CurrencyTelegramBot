@@ -8,9 +8,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.nio.charset.StandardCharsets;
-
 import java.util.ArrayList;
 
 import java.util.Collections;
@@ -34,7 +31,7 @@ public class StartCommand extends BotCommand {
 
         message.setChatId(Long.toString(chat.getId()));
 
-        InlineKeyboardButton updateInfo = createButton("Отримати інфо", "Get info");
+        InlineKeyboardButton updateInfo = createButton("Отримати інфо", "Get Info");
 
         InlineKeyboardButton settings = createButton("Налаштування", "Settings");
 
@@ -61,7 +58,7 @@ public class StartCommand extends BotCommand {
     public static InlineKeyboardButton createButton(String text, String callBackData) {
         return InlineKeyboardButton
                 .builder()
-                .text(new String(text))
+                .text(text)
                 .callbackData(callBackData)
                 .build();
 
