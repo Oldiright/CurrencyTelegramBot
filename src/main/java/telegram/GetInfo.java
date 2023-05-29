@@ -16,14 +16,15 @@ import java.util.*;
 public class GetInfo {
     public static final String TITLE = "Get Info";
     private static final String MESSAGE_TEXT = "Отримати інфо";
+    private static final String TO_START = "To Start";
     private static final String MESSAGE_TO_START = "До початкового меню";
-    private static final String PRIVAT = "ПриватБанк";
-    private static final String MONO = "МоноБанк";
     private static final String NBU = "НБУ";
+    private static final String MONO = "МоноБанк";
+    private static final String PRIVAT = "ПриватБанк";
 
     public static SendMessage infoMessage(Update update, Long chatId, UserSettings userSettings) {
 
-        SendMessage message = Utils.createMessage(MESSAGE_TEXT, chatId);
+        SendMessage message = null;
 
         if (update.hasCallbackQuery() & getCallbackQueryData(update).equals(TITLE)) {
 
@@ -96,14 +97,10 @@ public class GetInfo {
 
             message = Utils.createMessage(text, chatId);
 
-            InlineKeyboardButton toStart = InlineKeyboardButton.builder()
-                    .text(MESSAGE_TO_START)
-                    .callbackData("To Start")
-                    .build();
+            ArrayList<ArrayList<InlineKeyboardButton>> buttons = new ArrayList<>();
+            buttons.add(Utils.createButtonForColumnsKeyboard(MESSAGE_TO_START, TO_START));
 
-            InlineKeyboardMarkup keyboard = InlineKeyboardMarkup.builder()
-                    .keyboard(Collections.singleton(Collections.singletonList(toStart)))
-                    .build();
+            InlineKeyboardMarkup keyboard = Utils.createColumnsKeyboard(buttons);
 
             message.setReplyMarkup(keyboard);
 
@@ -145,21 +142,13 @@ class CustomHashMap<K, V> {
 
             if (key.equals("bankName")) {
                 sb.append("Курс в ").append(value).append(":\n");
-            } else if (key.equals("USD")) {
+            } else if (key.equals("USD") || key.equals("EUR")) {
                 sb.append("\n").append(value).append("/UAH\n");
-            } else if (key.equals("EUR")) {
-                sb.append("\n").append(value).append("/UAH\n");
-            } else if (key.equals("rateUSD")) {
+            } else if (key.equals("rateUSD") || key.equals("rateEUR")) {
                 sb.append(value).append("\n");
-            } else if (key.equals("rateEUR")) {
-                sb.append(value).append("\n");
-            } else if (key.equals("rateBuyUSD")) {
+            } else if (key.equals("rateBuyUSD") || key.equals("rateBuyEUR")) {
                 sb.append("Продаж: ").append(value).append("\n");
-            } else if (key.equals("rateSellUSD")) {
-                sb.append("Купівля: ").append(value).append("\n");
-            } else if (key.equals("rateBuyEUR")) {
-                sb.append("Продаж: ").append(value).append("\n");
-            } else if (key.equals("rateSellEUR")) {
+            } else if (key.equals("rateSellUSD") || key.equals("rateSellEUR")) {
                 sb.append("Купівля: ").append(value).append("\n");
             }
         }
