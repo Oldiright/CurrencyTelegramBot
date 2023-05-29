@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class NumberOfDecimalPlaces {
 
     public static final String TITLE ="Settings_Number_of_decimal_places";
-    private static final String[] CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES =new String[]{"Settings_Number_of_decimal_places_2","Settings_Number_of_decimal_places_3", "Settings_Number_of_decimal_places_4", "Settings"};
+    private static final String[] CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES =new String[]{"Settings_Number_of_decimal_places_2","Settings_Number_of_decimal_places_3", "Settings_Number_of_decimal_places_4", "Settings", "To Start"};
     private static final String FIRST_MESSAGE_TEXT ="Оберіть кількість знаків після коми:";
-    private static final String[] BUTTON_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES = new String[]{"2", "3", "4", "До меню налаштувань"};
+    private static final String[] BUTTON_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES = new String[]{"2", "3", "4", "До меню налаштувань", "До головного меню"};
 
 
     public static BotApiMethod settingsNumberOfDecimalPlacesMessage(Update update, Long chatId, UserSettings userSettings) {

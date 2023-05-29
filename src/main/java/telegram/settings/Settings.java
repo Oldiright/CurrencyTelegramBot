@@ -22,9 +22,9 @@ import java.util.HashMap;
 
 public class Settings {
     public static final String TITLE ="Settings";
-    private static final String[] CALLBACK_QUERY_DATA_SETTINGS =new String[]{"Settings_Number_of_decimal_places","Settings_Bank", "Settings_Currency", "Settings_Alert_times","To Start"};
+    private static final String[] CALLBACK_QUERY_DATA_SETTINGS =new String[]{"Settings_Bank", "Settings_Currency", "Settings_Alert_times", "Settings_Number_of_decimal_places", "To Start"};
     private static final String FIRST_MESSAGE_TEXT ="Налаштування";
-    private static final String[] CALLBACK_QUERY_TEXT_SETTINGS = new String[]{"Кількість знаків після коми", "Банк", "Валюти", "Час оповіщень", "До головного меню"};
+    private static final String[] CALLBACK_QUERY_TEXT_SETTINGS = new String[]{"Банк", "Валюти", "Час оповіщень", "Кількість знаків після коми", "До головного меню"};
     public static final String INVALID_TEXT_MESSAGE = "Ви ввели не коректні данні, якщо ви налаштовуєте регулярні сповіщення скористайтеся меню налаштувань:";
     public static final String INVALID_TIME_IN_MESSAGE = "Якщо ви зараз намагаєтесь налаштувати час сповіщень, зауважимо, що доступні години для налаштування з 09:00 до 18:00. Скористайтеся меню налаштувань для подальшої кастомізації";
     public static final String TORN_OFF_NOTIFICATION = "Автоматичну розсилку сповіщень вимкнемо. Ви завжди можете змінити це в налаштуваннях.";
@@ -51,25 +51,29 @@ public class Settings {
 
         } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[0])) {
 
-            //Кількість знаків після коми
-            return NumberOfDecimalPlaces.settingsNumberOfDecimalPlacesMessage(update, chatId,userSettings);
-
-        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[1])) {
-
             //Банк
             return BankSettings.settingsBankMessage(update, chatId, userSettings);
 
-        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[2])) {
+        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[1])) {
+
 
             //Валюти
 
             return CurrencySettings.settingsCurrencyMessage(update, chatId, userSettings);
 
-
-        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[3])) {
+        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[2])) {
 
             //Час оповіщень
             return AlertTimesSettings.settingsAlertTimeAlertTimesMessage(update,chatId,userSettings);
+
+
+
+        } else if(update.getCallbackQuery().getData().contains(CALLBACK_QUERY_DATA_SETTINGS[3])) {
+
+
+            //Кількість знаків після коми
+            return NumberOfDecimalPlaces.settingsNumberOfDecimalPlacesMessage(update, chatId,userSettings);
+
 
         }
 

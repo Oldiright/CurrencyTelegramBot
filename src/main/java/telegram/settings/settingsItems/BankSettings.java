@@ -32,6 +32,7 @@ public class BankSettings {
                 .forEach(buttons::add);
 
                 buttons.add(Utils.createButtonForColumnsKeyboard("До меню налаштувань", "Settings"));
+        buttons.add(Utils.createButtonForColumnsKeyboard("До головного меню", "To Start"));
 
         InlineKeyboardMarkup keyboard = Utils.createColumnsKeyboard(buttons);
 

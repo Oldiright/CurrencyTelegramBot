@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class CurrencySettings {
 
-    public static final String[] BUTTON_TEXT_SETTINGS_CURRENCY = new String[]{"USD", "EUR", "До меню налаштувань"};
-    public static final String[] CALLBACK_QUERY_DATA_SETTINGS_CURRENCY = new String[]{"Settings_Currency_USD", "Settings_Currency_EUR", "Settings"};
+    public static final String[] BUTTON_TEXT_SETTINGS_CURRENCY = new String[]{"USD", "EUR", "До меню налаштувань", "До головного меню"};
+    public static final String[] CALLBACK_QUERY_DATA_SETTINGS_CURRENCY = new String[]{"Settings_Currency_USD", "Settings_Currency_EUR", "Settings", "To Start"};
     private static final String FIRST_MESSAGE_TEXT ="Оберіть валюти:";
 
 

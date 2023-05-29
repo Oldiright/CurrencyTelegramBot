@@ -3,6 +3,7 @@ package telegram;
 
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.commands.StartCommand;
 import telegram.scheduler.AlertScheduler;
@@ -56,6 +57,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
 
                 sendApiMethodAsync(Settings.settingsMessage(update, chatId, userSettings.get(chatId)));
+
 
 
             }
