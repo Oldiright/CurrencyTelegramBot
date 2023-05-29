@@ -21,14 +21,11 @@ import java.util.HashMap;
 public class Settings {
     public static final String TITLE ="Settings";
     private static final String[] CALLBACK_QUERY_DATA_SETTINGS =new String[]{"Settings_Number_of_decimal_places","Settings_Bank", "Settings_Currency", "Settings_Alert_times","To Start"};
-     private static final String FIRST_MESSAGE_TEXT ="Налаштування";
+    private static final String FIRST_MESSAGE_TEXT ="Налаштування";
     private static final String[] CALLBACK_QUERY_TEXT_SETTINGS = new String[]{"Кількість знаків після коми", "Банк", "Валюти", "Час оповіщень", "До головного меню"};
-
     public static final String INVALID_TEXT_MESSAGE = "Ви ввели не коректні данні, якщо ви налаштовуєте регулярні сповіщення скористайтеся меню налаштувань:";
     public static final String INVALID_TIME_IN_MESSAGE = "Якщо ви зараз намагаєтесь налаштувати час сповіщень, зауважимо, що доступні години для налаштування з 09:00 до 18:00. Скористайтеся меню налаштувань для подальшої кастомізації";
-
     public static final String TORN_OFF_NOTIFICATION = "Автоматичну розсилку сповіщень вимкнемо. Ви завжди можете змінити це в налаштуваннях.";
-
     public static final String PART_OF_VALID_MESSAGE = "Час сповіщень встановлено на:";
     public static SendMessage settingsMessage(Update update, Long chatId, UserSettings userSettings) {
 
@@ -101,17 +98,15 @@ public class Settings {
 
         }
 
-
         boolean isDigit = true;
 
         for(int i = 0; i < inputMessage.length(); i++) {
-            boolean charIsDigit = Character.isDigit(inputMessage.charAt(i));
-            if(!charIsDigit) {
+
+            if(!Character.isDigit(inputMessage.charAt(i))) {
                 isDigit = false;
                 break;
             }
         }
-
 
         if(!isDigit || inputMessage.charAt(0) == '0') {
 
@@ -169,7 +164,6 @@ public class Settings {
                     .build();
         }
 
-
     }
 
     public static void removeUserFromAlertScheduler(AlertScheduler alertScheduler, Long chatId) {
@@ -179,5 +173,4 @@ public class Settings {
             }
         }
     }
-
 }
