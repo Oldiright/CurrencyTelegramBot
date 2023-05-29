@@ -31,14 +31,9 @@ public class TelegramBotService {
 
 
         //изначення кількості часу до наступної години;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        String serverStartTime = dtf.format(now);
+        String serverStartTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
         System.out.println(serverStartTime);
-        String[] dataAndTimeArray = serverStartTime.split( " ");
-
-        String[] time = dataAndTimeArray[1].split(":");
-
+        String[] time = serverStartTime.split( " ")[1].split(":");
         String[] timeBeforeNextHour = new String[]{
                 String.valueOf(60 - Integer.parseInt(time[1])),
                 String.valueOf(60 - Integer.parseInt(time[2]))};
@@ -56,10 +51,9 @@ public class TelegramBotService {
 
 
         while (true) {
-            LocalDateTime timeNow = LocalDateTime.now();
-            System.out.println(dtf.format(timeNow));
-            String hourRightNow = dtf.format(timeNow).split(" ")[1].split(":")[0];
-            System.out.println(hourRightNow);
+            String timeNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+            String hourRightNow = timeNow.split(" ")[1].split(":")[0];
+            System.out.println("hourRightNow - " + hourRightNow);
 
 
 

@@ -50,7 +50,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
             System.out.println(chatId);
             System.out.println(getCallbackQueryData(update));
 
-            if(getCallbackQueryData(update).contains("Settings")) {
+            if (getCallbackQueryData(update).contains("Settings")) {
 
                 SendMessage sendMessage = Settings.settingsMessage(update, chatId, userSettings.get(chatId));
 
@@ -58,7 +58,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
             }
 
-            if(getCallbackQueryData(update).contains("Get Info")) {
+            if (getCallbackQueryData(update).contains("Get Info")) {
 
                 // отримання інформації
 
@@ -68,7 +68,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
             }
 
-            if(getCallbackQueryData(update).equals("To Start")) {
+            if (getCallbackQueryData(update).equals("To Start")) {
                 SendMessage sendMessage = SendMessage
                         .builder()
                         .chatId(chatId)
@@ -81,13 +81,12 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
         }
 
-        if (update.hasMessage()){
+
+        if (update.hasMessage()) {
             sendApiMethodAsync(Settings.messageHandler(update, update.getMessage().getFrom().getId(), userSettings.get(chatId), alertScheduler));
+
+
         }
-
-
-
-
 
     }
 

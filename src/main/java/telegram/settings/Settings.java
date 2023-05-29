@@ -1,5 +1,6 @@
 package telegram.settings;
 
+import lombok.Getter;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -15,14 +16,20 @@ import telegram.settings.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Settings {
+@Getter
 
+public class Settings {
     public static final String TITLE ="Settings";
     private static final String[] CALLBACK_QUERY_DATA_SETTINGS =new String[]{"Settings_Number_of_decimal_places","Settings_Bank", "Settings_Currency", "Settings_Alert_times","To Start"};
      private static final String FIRST_MESSAGE_TEXT ="Налаштування";
     private static final String[] CALLBACK_QUERY_TEXT_SETTINGS = new String[]{"Кількість знаків після коми", "Банк", "Валюти", "Час оповіщень", "До головного меню"};
 
+    public static final String INVALID_TEXT_MESSAGE = "Ви ввели не коректні данні, якщо ви налаштовуєте регулярні сповіщення скористайтеся меню налаштувань:";
+    public static final String INVALID_TIME_IN_MESSAGE = "Нажаль в обраний вами час банки не працюють. Оберіть час з клавіатури нижче:";
 
+    public static final String TORN_OFF_NOTIFICATION = "Автоматичну розсилку сповіщень вимкнемо. Ви завжди можете змінити це в налаштуваннях.";
+
+    public static final String PART_OF_VALID_MESSAGE = "Час сповіщень встановлено на:";
     public static SendMessage settingsMessage(Update update, Long chatId, UserSettings userSettings) {
 
         if(update.getCallbackQuery().getData().equals(TITLE)) {
@@ -72,7 +79,7 @@ public class Settings {
 
     public static SendMessage messageHandler(Update update, Long chatId, UserSettings user, AlertScheduler alertScheduler){
         SendMessage message = AlertTimesSettings.settingsAlertTimeAlertTimesMessage(update, chatId, user);
-        String text = "Ви ввели не коректні данні, для збереження коректних налаштувань, якщо ви налаштовуєте регулярні сповіщення, скористайтесь клавіатурою нижче:";
+        String text = INVALID_TEXT_MESSAGE;
         String inputMessage = update.getMessage().getText();
 
 
@@ -81,26 +88,39 @@ public class Settings {
         try {
             isInt = Integer.parseInt(inputMessage);
             if (isInt < 9 || isInt > 18){
-                text = "Нажаль в обраний вами час банки не працюють. Оберіть час з клавіатури нижче:";
+                text = INVALID_TIME_IN_MESSAGE;
                 message.setText(text);
                 return message;
             } else {
                 user.setNeedAlertTimes(true);
+                user.setAlertTimes(inputMessage);
+
+                text = "Час сповіщень встановлено на: " + user.getAlertTimes() + ":00";
+                message.setText(text);
+                ReplyKeyboardRemove delete = new ReplyKeyboardRemove();
+                delete.setRemoveKeyboard(true);
+                message.setReplyMarkup(delete);
+                message.setChatId(chatId);
+
+
+
+
             }
 
         }catch (NumberFormatException e){
             if(inputMessage.equals("Вимкнути сповіщення")){
-                text = "Автоматичну розсилку сповіщень вимкнемо. Ви завжди можете змінити це в налаштуваннях.";
+                text = TORN_OFF_NOTIFICATION;
+                message.setText(text);
                 user.setNeedAlertTimes(false);
+            } else {
+                message.setText(text);
+                ReplyKeyboardRemove delete = new ReplyKeyboardRemove();
+                delete.setRemoveKeyboard(true);
+                message.setReplyMarkup(delete);
             }
-            message.setText(text);
-            ReplyKeyboardRemove delete = new ReplyKeyboardRemove();
-            delete.setRemoveKeyboard(true);
-            message.setReplyMarkup(delete);
-
         }
 
-        user.setAlertTimes(inputMessage);
+
         System.out.println(user.isNeedAlertTimes());
 
         //видалення користувача з планувальника сповіщень якщо user.isNeedAlertTimes() = false;
@@ -135,14 +155,7 @@ public class Settings {
 
 
 
-        text = "Час сповіщень встановлено на: " + user.getAlertTimes() + ":00";
-        message = new SendMessage();
-        message.setText(text);
-        ReplyKeyboardRemove delete = new ReplyKeyboardRemove();
-        delete.setRemoveKeyboard(true);
-        message.setReplyMarkup(delete);
-        message.setChatId(chatId);
-        return message;
+       return message;
 
     }
 
