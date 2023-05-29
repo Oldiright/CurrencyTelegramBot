@@ -25,10 +25,10 @@ public class BankSettings {
         }
 
         ArrayList<ArrayList<InlineKeyboardButton>> buttons =  new ArrayList<>();
-                Stream.of("NBU", "Privat", "Mono")
+                Stream.of(translatorToEng( "НБУ"),translatorToEng( "ПриватБанк"), translatorToEng( "МоноБанк"))
                 .map(s -> userSettings.getBankName()
-                        .equals(s) ? "✔️" + s : s)
-                .map(s -> Utils.createButtonForColumnsKeyboard(s, "Settings_Bank_" + s.replaceAll("✔️", "")))
+                        .equals(s) ? "✔️" + translatorToUkr(s) : translatorToUkr(s))
+                .map(s -> Utils.createButtonForColumnsKeyboard(s, "Settings_Bank_" + translatorToEng(s.replaceAll("✔️", ""))))
                 .forEach(buttons::add);
 
                 buttons.add(Utils.createButtonForColumnsKeyboard("До меню налаштувань", "Settings"));
@@ -53,5 +53,21 @@ public class BankSettings {
         }
 
 
+    }
+
+    private static String translatorToUkr(String input){
+        if(input.equals("NBU"))
+            return "НБУ";
+        if (input.equals("Mono"))
+            return "МоноБанк";
+        else return "ПриватБанк";
+    }
+
+    private static String translatorToEng(String input){
+        if(input.equals("НБУ"))
+            return "NBU";
+        if (input.equals("МоноБанк"))
+            return "Mono";
+        else return "Privat";
     }
 }
