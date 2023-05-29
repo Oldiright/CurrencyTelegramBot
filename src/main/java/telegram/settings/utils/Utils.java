@@ -81,7 +81,7 @@ public class Utils {
     public static int getMillisBeforeNextHour() {
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        int[] timeBeforeNextHour = new int[]{60 - localDateTime.getMinute(), 60 - localDateTime.getSecond()};
+        int[] timeBeforeNextHour = new int[]{59 - localDateTime.getMinute(), 60 - localDateTime.getSecond()};
 
         return ((timeBeforeNextHour[0] * 60 + timeBeforeNextHour[1])) * 1000;
     }
