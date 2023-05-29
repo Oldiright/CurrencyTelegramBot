@@ -5,6 +5,8 @@ import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingC
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import telegram.commands.GetCommand;
+import telegram.commands.InfoCommand;
 import telegram.commands.StartCommand;
 import telegram.scheduler.AlertScheduler;
 import telegram.settings.Settings;
@@ -15,13 +17,19 @@ import java.util.HashMap;
 public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
     AlertScheduler alertScheduler;
-    HashMap<Long, UserSettings> userSettings = new HashMap<>();
+    private final static HashMap<Long, UserSettings> userSettings = new HashMap<>();
 
     CurrencyTelegramBot(AlertScheduler alertScheduler) {
         this.alertScheduler = alertScheduler;
 
         register(new StartCommand());
+        register(new GetCommand());
+        register(new InfoCommand());
 
+    }
+
+    public static HashMap<Long, UserSettings> getUserSettings() {
+        return userSettings;
     }
 
     @Override
