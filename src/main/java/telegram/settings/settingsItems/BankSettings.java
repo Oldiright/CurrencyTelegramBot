@@ -1,6 +1,9 @@
 package telegram.settings.settingsItems;
 
+
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -12,14 +15,15 @@ import java.util.stream.Stream;
 
 public class BankSettings {
 
-    public static SendMessage settingsBankMessage(Update update, Long chatId, UserSettings userSettings){
+    public static BotApiMethod settingsBankMessage(Update update, Long chatId, UserSettings userSettings){
+        String text = "Оберіть банк:";
+
         if(update.getCallbackQuery().getData().contains("NBU")
                 || update.getCallbackQuery().getData().contains("Mono")
                 || update.getCallbackQuery().getData().contains("Privat")){
             userSettings.setBankName(update.getCallbackQuery().getData().replaceAll("Settings_Bank_", ""));
         }
 
-        String text = "Оберіть банк:";
         ArrayList<ArrayList<InlineKeyboardButton>> buttons =  new ArrayList<>();
                 Stream.of("NBU", "Privat", "Mono")
                 .map(s -> userSettings.getBankName()
@@ -28,10 +32,26 @@ public class BankSettings {
                 .forEach(buttons::add);
 
                 buttons.add(Utils.createButtonForColumnsKeyboard("До меню налаштувань", "Settings"));
+        buttons.add(Utils.createButtonForColumnsKeyboard("До головного меню", "To Start"));
 
         InlineKeyboardMarkup keyboard = Utils.createColumnsKeyboard(buttons);
-        SendMessage message = Utils.createMessage(text, chatId);
-        message.setReplyMarkup(keyboard);
-        return message;
+
+        if(update.getCallbackQuery().getData().equals("Settings_Bank")) {
+            return SendMessage.builder()
+                    .text(text)
+                    .chatId(chatId)
+                    .replyMarkup(keyboard)
+                    .build();
+
+        } else {
+
+            return EditMessageReplyMarkup.builder()
+                    .replyMarkup(keyboard)
+                    .chatId(chatId)
+                    .messageId(update.getCallbackQuery().getMessage().getMessageId())
+                    .build();
+        }
+
+
     }
 }

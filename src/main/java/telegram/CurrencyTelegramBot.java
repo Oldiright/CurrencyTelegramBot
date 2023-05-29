@@ -3,6 +3,7 @@ package telegram;
 
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.commands.StartCommand;
 import telegram.scheduler.AlertScheduler;
@@ -40,6 +41,8 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
     public void processNonCommandUpdate(Update update) {
 
 
+
+
         Long chatId = Utils.getChatId(update);
         if(!userSettings.containsKey(chatId)) {
             userSettings.put(chatId, new UserSettings());
@@ -52,9 +55,10 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
             if (getCallbackQueryData(update).contains("Settings")) {
 
-                SendMessage sendMessage = Settings.settingsMessage(update, chatId, userSettings.get(chatId));
 
-                sendApiMethodAsync(sendMessage);
+                sendApiMethodAsync(Settings.settingsMessage(update, chatId, userSettings.get(chatId)));
+
+
 
             }
 
@@ -84,6 +88,14 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
         if (update.hasMessage()) {
             sendApiMethodAsync(Settings.messageHandler(update, update.getMessage().getFrom().getId(), userSettings.get(chatId), alertScheduler));
+
+            //повідомлення з головним меню
+            sendApiMethodAsync(SendMessage
+                    .builder()
+                    .chatId(chatId)
+                    .text("Головне меню")
+                    .replyMarkup(Utils.getGeneralMenuKeyboard())
+                    .build());
 
 
         }

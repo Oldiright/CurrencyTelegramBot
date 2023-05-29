@@ -2,15 +2,16 @@ package telegram;
 
 import lombok.Data;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import telegram.scheduler.AlertScheduler;
-
+import telegram.settings.utils.Utils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
+
+import static telegram.settings.utils.Utils.getMillisBeforeNextHour;
+
 
 @Data
 public class TelegramBotService {
@@ -29,60 +30,44 @@ public class TelegramBotService {
             ex.printStackTrace();
         }
 
-
-        //изначення кількості часу до наступної години;
-        String serverStartTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-        System.out.println(serverStartTime);
-        String[] time = serverStartTime.split( " ")[1].split(":");
-        String[] timeBeforeNextHour = new String[]{
-                String.valueOf(60 - Integer.parseInt(time[1])),
-                String.valueOf(60 - Integer.parseInt(time[2]))};
-
-        long millisBeforeNextHour = (Long.parseLong(timeBeforeNextHour[0]) * 60 + Long.parseLong(timeBeforeNextHour[1])) * 1000;
-
+        System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
 
         //очікування до наступної години;
 
         try {
-            Thread.sleep(millisBeforeNextHour);
+            Thread.sleep(getMillisBeforeNextHour());
+//            Thread.sleep(30000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
 
         while (true) {
-            String timeNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-            String hourRightNow = timeNow.split(" ")[1].split(":")[0];
-            System.out.println("hourRightNow - " + hourRightNow);
-
-
+           String hourRightNow = String.valueOf(LocalDateTime.now().getHour());
 
             if(alertScheduler.getScheduler().containsKey(hourRightNow)) {
                 Set<Long> ourChats = alertScheduler.getScheduler().get(hourRightNow).keySet();
                 System.out.println(ourChats);
 
-                for (Long id: ourChats) {
+                for (Long chatId: ourChats) {
                     try {
-                        Update updateForGetIfo = new Update();
-                        CallbackQuery callbackQuery = new CallbackQuery();
-                        callbackQuery.setData("Get Info");
-                        updateForGetIfo.setCallbackQuery(callbackQuery);
-                        currencyTelegramBot.executeAsync(GetInfo.infoMessage(updateForGetIfo, id, alertScheduler.getScheduler().get(hourRightNow).get(id)));
+                        currencyTelegramBot.executeAsync(GetInfo.infoMessage(Utils.createUtilUpdate("Get Info"), chatId, alertScheduler.getScheduler().get(hourRightNow).get(chatId)));
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
                 }
-
-
             }
+
+            //очікування до наступної години;
+
             try {
-                Thread.sleep(3600000);
+                Thread.sleep(getMillisBeforeNextHour());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
         }
 
-
     }
+
 }
