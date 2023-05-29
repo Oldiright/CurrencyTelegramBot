@@ -1,6 +1,8 @@
 package telegram.settings.settingsItems;
 
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -16,7 +18,7 @@ public class NumberOfDecimalPlaces {
     private static final String[] BUTTON_TEXT_SETTINGS_NUMBER_OF_DECIMAL_PLACES = new String[]{"2", "3", "4", "До меню налаштувань"};
 
 
-    public static SendMessage settingsNumberOfDecimalPlacesMessage(Update update, Long chatId, UserSettings userSettings) {
+    public static BotApiMethod settingsNumberOfDecimalPlacesMessage(Update update, Long chatId, UserSettings userSettings) {
 
 
         if((update.getCallbackQuery().getData().equals(TITLE))) {
@@ -27,19 +29,19 @@ public class NumberOfDecimalPlaces {
 
             userSettings.setNumberOfDecimalPlaces(2);
 
-            return NumberOfDecimalPlacesMessage(chatId, userSettings);
+            return EditNumberOfDecimalPlacesMessage(chatId, userSettings, update);
 
         } else if((update.getCallbackQuery().getData().equals(CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES[1]))) {
 
             userSettings.setNumberOfDecimalPlaces(3);
 
-            return NumberOfDecimalPlacesMessage(chatId, userSettings);
+            return EditNumberOfDecimalPlacesMessage(chatId, userSettings, update);
 
         } else if((update.getCallbackQuery().getData().equals(CALLBACK_QUERY_DATA_SETTINGS_NUMBER_OF_DECIMAL_PLACES[2]))) {
 
             userSettings.setNumberOfDecimalPlaces(4);
 
-            return NumberOfDecimalPlacesMessage(chatId, userSettings);
+            return EditNumberOfDecimalPlacesMessage(chatId, userSettings, update);
 
         } else {
 
@@ -66,12 +68,24 @@ public class NumberOfDecimalPlaces {
     }
 
 
-    private static SendMessage NumberOfDecimalPlacesMessage(Long chatId, UserSettings userSettings) {
+    private static BotApiMethod NumberOfDecimalPlacesMessage(Long chatId, UserSettings userSettings) {
 
         SendMessage message = Utils.createMessage(FIRST_MESSAGE_TEXT, chatId);
 
         InlineKeyboardMarkup keyboard = Utils.createColumnsKeyboard(getButtonsForSettingsNumberOfDecimalPlaces(userSettings));
 
+        message.setReplyMarkup(keyboard);
+        return message;
+    }
+
+    private static BotApiMethod EditNumberOfDecimalPlacesMessage(Long chatId, UserSettings userSettings, Update update) {
+
+        EditMessageReplyMarkup message = new EditMessageReplyMarkup();
+
+        InlineKeyboardMarkup keyboard = Utils.createColumnsKeyboard(getButtonsForSettingsNumberOfDecimalPlaces(userSettings));
+
+        message.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+        message.setChatId(chatId);
         message.setReplyMarkup(keyboard);
         return message;
     }

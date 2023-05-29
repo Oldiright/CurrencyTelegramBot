@@ -1,6 +1,7 @@
 package telegram.settings;
 
 import lombok.Getter;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -13,6 +14,7 @@ import telegram.settings.settingsItems.BankSettings;
 import telegram.settings.settingsItems.CurrencySettings;
 import telegram.settings.settingsItems.NumberOfDecimalPlaces;
 import telegram.settings.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,7 +29,8 @@ public class Settings {
     public static final String INVALID_TIME_IN_MESSAGE = "Якщо ви зараз намагаєтесь налаштувати час сповіщень, зауважимо, що доступні години для налаштування з 09:00 до 18:00. Скористайтеся меню налаштувань для подальшої кастомізації";
     public static final String TORN_OFF_NOTIFICATION = "Автоматичну розсилку сповіщень вимкнемо. Ви завжди можете змінити це в налаштуваннях.";
     public static final String PART_OF_VALID_MESSAGE = "Час сповіщень встановлено на:";
-    public static SendMessage settingsMessage(Update update, Long chatId, UserSettings userSettings) {
+
+    public static BotApiMethod settingsMessage(Update update, Long chatId, UserSettings userSettings) {
 
         if(update.getCallbackQuery().getData().equals(TITLE)) {
             SendMessage message = Utils.createMessage(FIRST_MESSAGE_TEXT, chatId);
