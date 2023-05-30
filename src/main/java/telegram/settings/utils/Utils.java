@@ -128,7 +128,7 @@ public class Utils {
     }
 
     public static AlertScheduler getAlertScheduler() throws FileNotFoundException {
-        FileReader fr = new FileReader("usersettings.json");
+        FileReader fr = new FileReader("alertscheduler.json");
         GsonBuilder gsonBuilder = new GsonBuilder();
         AlertScheduler alertScheduler = new AlertScheduler();
         alertScheduler.setScheduler(gsonBuilder
