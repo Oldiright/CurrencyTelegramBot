@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 @Data
@@ -31,7 +35,6 @@ public class TelegramBotService {
 
         currencyTelegramBot = new CurrencyTelegramBot(alertScheduler);
 
-
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(currencyTelegramBot);
@@ -40,6 +43,10 @@ public class TelegramBotService {
         }
 
         System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+        scheduler.scheduleAtFixedRate(currencyTelegramBot::saveData, 10, 30, SECONDS);
 
 
         Scanner scanner = new Scanner(System.in);
@@ -73,7 +80,5 @@ public class TelegramBotService {
                     }
             }
         }
-
     }
-
 }
