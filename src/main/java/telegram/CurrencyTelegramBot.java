@@ -3,7 +3,6 @@ package telegram;
 
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.commands.GetCommand;
 import telegram.commands.InfoCommand;
@@ -12,12 +11,22 @@ import telegram.scheduler.AlertScheduler;
 import telegram.settings.Settings;
 import telegram.settings.utils.Utils;
 
-import java.util.HashMap;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
     AlertScheduler alertScheduler;
-    private final static HashMap<Long, UserSettings> userSettings = new HashMap<>();
+    private final static ConcurrentHashMap<Long, UserSettings> userSettings;
+
+    static {
+        try {
+            userSettings = Utils.getUserSettingsData();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     CurrencyTelegramBot(AlertScheduler alertScheduler) {
         this.alertScheduler = alertScheduler;
@@ -28,7 +37,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
     }
 
-    public static HashMap<Long, UserSettings> getUserSettings() {
+    public static ConcurrentHashMap<Long, UserSettings> getUserSettings() {
         return userSettings;
     }
 
@@ -54,6 +63,11 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
         Long chatId = Utils.getChatId(update);
         if(!userSettings.containsKey(chatId)) {
             userSettings.put(chatId, new UserSettings());
+            try {
+                Utils.writerInTheBase(userSettings);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
         }
 

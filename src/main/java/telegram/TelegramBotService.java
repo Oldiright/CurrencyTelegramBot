@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-import static telegram.settings.utils.Utils.getMillisBeforeNextHour;
-
 
 @Data
 public class TelegramBotService {
@@ -32,14 +30,7 @@ public class TelegramBotService {
 
         System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
 
-//        //очікування до наступної години;
-//
-//        try {
-//            Thread.sleep(getMillisBeforeNextHour());
-////            Thread.sleep(30000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+
 
 
         while (true) {
@@ -66,14 +57,6 @@ public class TelegramBotService {
                         }
                     }
             }
-//            //очікування до наступної години;
-//
-//            try {
-//                Thread.sleep(getMillisBeforeNextHour());
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-
         }
 
     }

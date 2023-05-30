@@ -1,14 +1,23 @@
 package telegram.settings.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import telegram.UserSettings;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
 
@@ -93,5 +102,27 @@ public class Utils {
         update.setCallbackQuery(callbackQuery);
 
         return update;
+    }
+
+
+    public static ConcurrentHashMap<Long, UserSettings> getUserSettingsData() throws FileNotFoundException {
+        FileReader fr = new FileReader("usersettings.json");
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+// добавить закриття стріму
+        return gsonBuilder
+                .create()
+                .fromJson(fr, new TypeToken<ConcurrentHashMap<Long, UserSettings>>(){}.getType());
+    }
+
+
+    public static void writerInTheBase(ConcurrentHashMap<Long, UserSettings> userSettings) throws IOException {
+        FileWriter fr = new FileWriter("usersettings.json");
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String result = gson.toJson(userSettings);
+        fr.write(result);
+        fr.flush();
+        fr.close();
     }
 }
