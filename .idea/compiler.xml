@@ -7,7 +7,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.26/8f8cf0372abf564913e9796623aac4c8ea44025a/lombok-1.18.26.jar" />
         </processorPath>
-        <module name="org.example.CurrencyTelegramBot.main" />
+        <module name="telegram_bot_project_group2_last_version2.CurrencyTelegramBot.main" />
         <module name="CurrencyTelegramBot.test" />
       </profile>
     </annotationProcessing>

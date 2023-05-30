@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
@@ -117,7 +118,7 @@ public class Utils {
     }
 
 
-    public static void writerInTheBase(ConcurrentHashMap<Long, UserSettings> userSettings) throws IOException {
+    public static void writerInTheBase(Map<Long, UserSettings> userSettings) throws IOException {
         FileWriter fr = new FileWriter("usersettings.json");
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
