@@ -32,39 +32,47 @@ public class TelegramBotService {
 
         System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
 
-        //очікування до наступної години;
-
-        try {
-            Thread.sleep(getMillisBeforeNextHour());
-//            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        //очікування до наступної години;
+//
+//        try {
+//            Thread.sleep(getMillisBeforeNextHour());
+////            Thread.sleep(30000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
         while (true) {
+
            String hourRightNow = String.valueOf(LocalDateTime.now().getHour());
 
-            if(alertScheduler.getScheduler().containsKey(hourRightNow)) {
-                Set<Long> ourChats = alertScheduler.getScheduler().get(hourRightNow).keySet();
-                System.out.println(ourChats);
+           //в цикле проверяем целые часы и запускаем тот же процесс расписания
+            for (int i = 9; i < 19; i++) {
+                if (LocalDateTime.now().getHour() == i
+                        && LocalDateTime.now().getMinute() == 0
+                        && LocalDateTime.now().getSecond() == 0)
 
-                for (Long chatId: ourChats) {
-                    try {
-                        currencyTelegramBot.executeAsync(GetInfo.infoMessage(Utils.createUtilUpdate("Get Info"), chatId, alertScheduler.getScheduler().get(hourRightNow).get(chatId)));
-                    } catch (TelegramApiException e) {
-                        throw new RuntimeException(e);
+                    //этот код не менял (рассылка) (переменную hourRightNow можно убрать, она равна - "" + i)
+                    if (alertScheduler.getScheduler().containsKey(hourRightNow)) {
+                        Set<Long> ourChats = alertScheduler.getScheduler().get(hourRightNow).keySet();
+                        System.out.println(ourChats);
+
+                        for (Long chatId : ourChats) {
+                            try {
+                                currencyTelegramBot.executeAsync(GetInfo.infoMessage(Utils.createUtilUpdate("Get Info"), chatId, alertScheduler.getScheduler().get(hourRightNow).get(chatId)));
+                            } catch (TelegramApiException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
-                }
             }
-
-            //очікування до наступної години;
-
-            try {
-                Thread.sleep(getMillisBeforeNextHour());
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//            //очікування до наступної години;
+//
+//            try {
+//                Thread.sleep(getMillisBeforeNextHour());
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
 
         }
 
