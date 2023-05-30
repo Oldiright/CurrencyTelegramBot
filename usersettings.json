@@ -1,9 +1,1 @@
-{
-  "783226974": {
-    "NumberOfDecimalPlaces": 2,
-    "bankName": "NBU",
-    "euro": true,
-    "usd": true,
-    "needAlertTimes": false
-  }
-}
+{}
