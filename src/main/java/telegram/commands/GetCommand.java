@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.CurrencyTelegramBot;
 import telegram.GetInfo;
+import telegram.UserSettings;
 
 public class GetCommand extends BotCommand {
     public GetCommand(){
@@ -23,7 +24,10 @@ public class GetCommand extends BotCommand {
         CallbackQuery query = new CallbackQuery();
         query.setData("Get Info");
         update.setCallbackQuery(query);
-        SendMessage message = GetInfo.infoMessage(update, user.getId(), CurrencyTelegramBot.getUserSettings().get(user.getId()));
+        UserSettings userSettings = CurrencyTelegramBot.getUserSettings().get(user.getId()) == null
+                ? new UserSettings()
+                : CurrencyTelegramBot.getUserSettings().get(user.getId());
+        SendMessage message = GetInfo.infoMessage(update, user.getId(), userSettings);
         try {
             absSender.execute(message);
         } catch (TelegramApiException e) {
