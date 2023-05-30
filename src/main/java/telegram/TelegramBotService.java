@@ -6,6 +6,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import telegram.scheduler.AlertScheduler;
 import telegram.settings.utils.Utils;
+
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -14,7 +16,15 @@ import java.util.Set;
 @Data
 public class TelegramBotService {
     private final CurrencyTelegramBot currencyTelegramBot;
-    private AlertScheduler alertScheduler = new AlertScheduler();
+    private AlertScheduler alertScheduler;
+
+    {
+        try {
+            alertScheduler = Utils.getAlertScheduler();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public TelegramBotService(){
 

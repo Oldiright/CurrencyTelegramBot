@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import telegram.UserSettings;
+import telegram.scheduler.AlertScheduler;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -125,4 +126,29 @@ public class Utils {
         fr.flush();
         fr.close();
     }
+
+    public static AlertScheduler getAlertScheduler() throws FileNotFoundException {
+        FileReader fr = new FileReader("usersettings.json");
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        AlertScheduler alertScheduler = new AlertScheduler();
+        alertScheduler.setScheduler(gsonBuilder
+                .create()
+                .fromJson(fr, new TypeToken<ConcurrentHashMap<String, ConcurrentHashMap<Long, UserSettings>>>(){}.getType()));
+// добавить закриття стріму
+        return alertScheduler;
+    }
+
+
+    public static void writerInTheBase(AlertScheduler alertScheduler) throws IOException {
+        FileWriter fr = new FileWriter("alertscheduler.json");
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String result = gson.toJson(alertScheduler.getScheduler());
+        fr.write(result);
+        fr.flush();
+        fr.close();
+    }
+
+
+
 }
