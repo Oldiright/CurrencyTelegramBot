@@ -10,6 +10,7 @@ import telegram.settings.utils.Utils;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 import java.util.Set;
 
 
@@ -41,7 +42,11 @@ public class TelegramBotService {
         System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
 
 
-
+        Scanner scanner = new Scanner(System.in);
+        if(scanner.next().equalsIgnoreCase("exit")){
+            currencyTelegramBot.saveData();
+            System.exit(0);
+        }
 
         while (true) {
 

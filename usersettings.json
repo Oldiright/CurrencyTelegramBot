@@ -1,1 +1,18 @@
-{}
+{
+  "555696079": {
+    "NumberOfDecimalPlaces": 4,
+    "bankName": "Privat",
+    "euro": true,
+    "usd": false,
+    "alertTimes": "14",
+    "needAlertTimes": true
+  },
+  "783226974": {
+    "NumberOfDecimalPlaces": 4,
+    "bankName": "Mono",
+    "euro": true,
+    "usd": false,
+    "alertTimes": "09",
+    "needAlertTimes": true
+  }
+}

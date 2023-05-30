@@ -13,12 +13,13 @@ import telegram.settings.utils.Utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
     AlertScheduler alertScheduler;
-    private final static ConcurrentHashMap<Long, UserSettings> userSettings;
+    private final static Map<Long, UserSettings> userSettings;
 
     static {
         try {
@@ -37,7 +38,7 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
 
     }
 
-    public static ConcurrentHashMap<Long, UserSettings> getUserSettings() {
+    public static Map<Long, UserSettings> getUserSettings() {
         return userSettings;
     }
 
@@ -120,6 +121,16 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
                     .build());
 
 
+        }
+
+    }
+
+    public void saveData(){
+        try{
+            Utils.writerInTheBase(userSettings);
+            Utils.writerInTheBase(alertScheduler);
+        } catch(IOException e){
+            e.printStackTrace();
         }
 
     }
