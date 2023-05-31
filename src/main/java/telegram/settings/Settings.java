@@ -16,7 +16,7 @@ import telegram.settings.settingsItems.NumberOfDecimalPlaces;
 import telegram.settings.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 
@@ -156,7 +156,7 @@ public class Settings {
                     // додавання користувача до розкладу сповіщень
 
             if(!alertScheduler.getScheduler().containsKey(inputMessage)) {
-                alertScheduler.getScheduler().put(inputMessage, new HashMap<>());
+                alertScheduler.getScheduler().put(inputMessage, new ConcurrentHashMap<>());
             }
             alertScheduler.getScheduler().get(inputMessage).put(chatId, user);
 

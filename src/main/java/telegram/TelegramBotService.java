@@ -46,20 +46,32 @@ public class TelegramBotService {
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-        scheduler.scheduleAtFixedRate(currencyTelegramBot::saveData, 10, 30, SECONDS);
+        scheduler.scheduleAtFixedRate(currencyTelegramBot::saveData, 9, 21, SECONDS);
+
+        ScheduledExecutorService schedulerForScanner = Executors.newScheduledThreadPool(1);
+
+        schedulerForScanner.scheduleAtFixedRate(() -> {
+
+            Scanner scanner = new Scanner(System.in);
+            if (scanner.next().equalsIgnoreCase("exit")) {
+                currencyTelegramBot.saveData();
+                System.exit(0);
+            } else {
+                scanner.close();
+            }
+        }, 2, 2, SECONDS);
 
 
-        Scanner scanner = new Scanner(System.in);
-        if(scanner.next().equalsIgnoreCase("exit")){
-            currencyTelegramBot.saveData();
-            System.exit(0);
-        }
 
         while (true) {
 
+
+
            String hourRightNow = String.valueOf(LocalDateTime.now().getHour());
 
-           //в цикле проверяем целые часы и запускаем тот же процесс расписания
+
+
+            //в цикле проверяем целые часы и запускаем тот же процесс расписания
             for (int i = 9; i < 19; i++) {
                 if (LocalDateTime.now().getHour() == i
                         && LocalDateTime.now().getMinute() == 0
