@@ -1,6 +1,7 @@
 package telegram;
 
 import currency.Currency;
+import currency.CurrencyService;
 import currency.nbu.NBUCurrencyService;
 import currency.mono.MonoBankCurrencyService;
 import currency.privat.PrivatBankCurrencyService;
@@ -13,9 +14,9 @@ import telegram.settings.utils.Utils;
 import java.util.*;
 
 
+
 public class GetInfo {
     public static final String TITLE = "Get Info";
-    private static final String MESSAGE_TEXT = "Отримати інфо";
     private static final String TO_START = "To Start";
     private static final String MESSAGE_TO_START = "До головного меню";
     private static final String NBU = "НБУ";
@@ -27,25 +28,17 @@ public class GetInfo {
         SendMessage message = null;
 
         if (update.hasCallbackQuery() & getCallbackQueryData(update).equals(TITLE)) {
-
             CustomHashMap<String, String> getInfoMap = new CustomHashMap<>();
-            Currency currency;
 
             if (userSettings.getBankName().equals("NBU")) {
                 getInfoMap.put("bankName", NBU);
 
                 if (userSettings.isUsd()) {
-                    currency = Currency.USD;
-                    getInfoMap.put("USD", "" + currency);
-                    String rate = roundedRate(new NBUCurrencyService().getRate(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateUSD", rate);
+                    addRateToMap(Currency.USD, new NBUCurrencyService(), getInfoMap, userSettings);
                 }
 
                 if (userSettings.isEuro()) {
-                    currency = Currency.EUR;
-                    getInfoMap.put("EUR", "" + currency);
-                    String rate = roundedRate(new NBUCurrencyService().getRate(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateEUR", rate);
+                    addRateToMap(Currency.EUR, new NBUCurrencyService(), getInfoMap, userSettings);
                 }
             }
 
@@ -53,21 +46,11 @@ public class GetInfo {
                 getInfoMap.put("bankName", MONO);
 
                 if (userSettings.isUsd()) {
-                    currency = Currency.USD;
-                    getInfoMap.put("USD", "" + currency);
-                    String rateBuyUSD = roundedRate(new MonoBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateBuyUSD", rateBuyUSD);
-                    String rateSellUSD = roundedRate(new MonoBankCurrencyService().getRateSell(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateSellUSD", rateSellUSD);
+                    addRateToMap(Currency.USD, new MonoBankCurrencyService(), getInfoMap, userSettings);
                 }
 
                 if (userSettings.isEuro()) {
-                    currency = Currency.EUR;
-                    getInfoMap.put("EUR", "" + currency);
-                    String rateBuyEUR = roundedRate(new MonoBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateBuyEUR", rateBuyEUR);
-                    String rateSellEUR = roundedRate(new MonoBankCurrencyService().getRateSell(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateSellEUR", rateSellEUR);
+                    addRateToMap(Currency.EUR, new MonoBankCurrencyService(), getInfoMap, userSettings);
                 }
             }
 
@@ -75,43 +58,42 @@ public class GetInfo {
                 getInfoMap.put("bankName", PRIVAT);
 
                 if (userSettings.isUsd()) {
-                    currency = Currency.USD;
-                    getInfoMap.put("USD", "" + currency);
-                    String rateBuyUSD = roundedRate(new PrivatBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateBuyUSD", rateBuyUSD);
-                    String rateSellUSD = roundedRate(new PrivatBankCurrencyService().getRateSell(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateSellUSD", rateSellUSD);
+                    addRateToMap(Currency.USD,new PrivatBankCurrencyService(), getInfoMap, userSettings);
                 }
 
                 if (userSettings.isEuro()) {
-                    currency = Currency.EUR;
-                    getInfoMap.put("EUR", "" + currency);
-                    String rateBuyEUR = roundedRate(new PrivatBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateBuyEUR", rateBuyEUR);
-                    String rateSellEUR = roundedRate(new PrivatBankCurrencyService().getRateSell(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateSellEUR", rateSellEUR);
+                    addRateToMap(Currency.EUR, new PrivatBankCurrencyService(), getInfoMap, userSettings);
                 }
             }
 
             String text = getInfoMap.toString();
-
             message = Utils.createMessage(text, chatId);
-
             ArrayList<ArrayList<InlineKeyboardButton>> buttons = new ArrayList<>();
             buttons.add(Utils.createButtonForColumnsKeyboard(MESSAGE_TO_START, TO_START));
-
             InlineKeyboardMarkup keyboard = Utils.createColumnsKeyboard(buttons);
-
             message.setReplyMarkup(keyboard);
-
         }
         return message;
+    }
+
+    public static void addRateToMap(Currency currencyEnum, CurrencyService bankAPIService, CustomHashMap<String, String> getInfoMap , UserSettings userSettings) {
+        Currency currency = currencyEnum;
+        if(!bankAPIService.getClass().equals(NBUCurrencyService.class)) {
+            getInfoMap.put(currency.toString(), "" + currency);
+            String rateBuy = roundedRate(new PrivatBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
+            getInfoMap.put("rateBuy" + currency, rateBuy);
+            String rateSell = roundedRate(bankAPIService.getRateSell(currencyEnum), userSettings.getNumberOfDecimalPlaces());
+            getInfoMap.put("rateSell"+ currency, rateSell);
+        } else {
+            getInfoMap.put(currencyEnum.toString(), "" + currency);
+            String rate = roundedRate(bankAPIService.getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
+            getInfoMap.put("rate" + currency, rate);
+        }
     }
 
     public static String getCallbackQueryData(Update update) {
         return update.getCallbackQuery().getData();
     }
-
 
     public static String roundedRate(double rate, int numberOfDecimals) {
 
