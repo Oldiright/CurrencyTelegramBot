@@ -38,14 +38,14 @@ public class GetInfo {
                     currency = Currency.USD;
                     getInfoMap.put("USD", "" + currency);
                     String rate = roundedRate(new NBUCurrencyService().getRate(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateUSD", "" + rate);
+                    getInfoMap.put("rateUSD", rate);
                 }
 
                 if (userSettings.isEuro()) {
                     currency = Currency.EUR;
                     getInfoMap.put("EUR", "" + currency);
                     String rate = roundedRate(new NBUCurrencyService().getRate(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateEUR", "" + rate);
+                    getInfoMap.put("rateEUR", rate);
                 }
             }
 
@@ -56,18 +56,18 @@ public class GetInfo {
                     currency = Currency.USD;
                     getInfoMap.put("USD", "" + currency);
                     String rateBuyUSD = roundedRate(new MonoBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateBuyUSD", "" + rateBuyUSD);
+                    getInfoMap.put("rateBuyUSD", rateBuyUSD);
                     String rateSellUSD = roundedRate(new MonoBankCurrencyService().getRateSell(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateSellUSD", "" + rateSellUSD);
+                    getInfoMap.put("rateSellUSD", rateSellUSD);
                 }
 
                 if (userSettings.isEuro()) {
                     currency = Currency.EUR;
                     getInfoMap.put("EUR", "" + currency);
                     String rateBuyEUR = roundedRate(new MonoBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateBuyEUR", "" + rateBuyEUR);
+                    getInfoMap.put("rateBuyEUR", rateBuyEUR);
                     String rateSellEUR = roundedRate(new MonoBankCurrencyService().getRateSell(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateSellEUR", "" + rateSellEUR);
+                    getInfoMap.put("rateSellEUR", rateSellEUR);
                 }
             }
 
@@ -78,18 +78,18 @@ public class GetInfo {
                     currency = Currency.USD;
                     getInfoMap.put("USD", "" + currency);
                     String rateBuyUSD = roundedRate(new PrivatBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateBuyUSD", "" + rateBuyUSD);
+                    getInfoMap.put("rateBuyUSD", rateBuyUSD);
                     String rateSellUSD = roundedRate(new PrivatBankCurrencyService().getRateSell(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateSellUSD", "" + rateSellUSD);
+                    getInfoMap.put("rateSellUSD", rateSellUSD);
                 }
 
                 if (userSettings.isEuro()) {
                     currency = Currency.EUR;
                     getInfoMap.put("EUR", "" + currency);
                     String rateBuyEUR = roundedRate(new PrivatBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateBuyEUR", "" + rateBuyEUR);
+                    getInfoMap.put("rateBuyEUR", rateBuyEUR);
                     String rateSellEUR = roundedRate(new PrivatBankCurrencyService().getRateSell(currency), userSettings.getNumberOfDecimalPlaces());
-                    getInfoMap.put("rateSellEUR", "" + rateSellEUR);
+                    getInfoMap.put("rateSellEUR", rateSellEUR);
                 }
             }
 
