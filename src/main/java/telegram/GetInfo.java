@@ -14,57 +14,48 @@ import telegram.settings.utils.Utils;
 import java.util.*;
 
 
-
 public class GetInfo {
     public static final String TITLE = "Get Info";
     private static final String TO_START = "To Start";
     private static final String MESSAGE_TO_START = "До головного меню";
-    private static final String NBU = "НБУ";
-    private static final String MONO = "МоноБанк";
-    private static final String PRIVAT = "ПриватБанк";
+
+//    private static final String NBU = "НБУ";
+//    private static final String MONO = "МоноБанк";
+//    private static final String PRIVAT = "ПриватБанк";
+
+    private static final String[] NBU = {"NBU", "НБУ"};
+    private static final String[] MONO = {"Mono", "МоноБанк"};
+    private static final String[] PRIVAT = {"Privat", "ПриватБанк"};
+
 
     public static SendMessage infoMessage(Update update, Long chatId, UserSettings userSettings) {
 
         SendMessage message = null;
+        String bankName = userSettings.getBankName();
+        String[][] banks = new String[][]{NBU, MONO, PRIVAT};
 
         if (update.hasCallbackQuery() & getCallbackQueryData(update).equals(TITLE)) {
             CustomHashMap<String, String> getInfoMap = new CustomHashMap<>();
 
-            if (userSettings.getBankName().equals("NBU")) {
-                getInfoMap.put("bankName", NBU);
+            CurrencyService service = userSettings.getBankName().equals("NBU")
+                    ? new NBUCurrencyService()
+                    : userSettings.getBankName().equals("Privat")
+                    ? new PrivatBankCurrencyService()
+                    : new MonoBankCurrencyService();
 
-                if (userSettings.isUsd()) {
-                    addRateToMap(Currency.USD, new NBUCurrencyService(), getInfoMap, userSettings);
-                }
-
-                if (userSettings.isEuro()) {
-                    addRateToMap(Currency.EUR, new NBUCurrencyService(), getInfoMap, userSettings);
-                }
+            for (String[] bank : banks) {
+                if (bank[0].equals(bankName))
+                    getInfoMap.put("bankName", bank[1]);
             }
 
-            if (userSettings.getBankName().equals("Mono")) {
-                getInfoMap.put("bankName", MONO);
-
-                if (userSettings.isUsd()) {
-                    addRateToMap(Currency.USD, new MonoBankCurrencyService(), getInfoMap, userSettings);
-                }
-
-                if (userSettings.isEuro()) {
-                    addRateToMap(Currency.EUR, new MonoBankCurrencyService(), getInfoMap, userSettings);
-                }
+            if (userSettings.isUsd()) {
+                addRateToMap(Currency.USD, service, getInfoMap, userSettings);
             }
 
-            if (userSettings.getBankName().equals("Privat")) {
-                getInfoMap.put("bankName", PRIVAT);
-
-                if (userSettings.isUsd()) {
-                    addRateToMap(Currency.USD,new PrivatBankCurrencyService(), getInfoMap, userSettings);
-                }
-
-                if (userSettings.isEuro()) {
-                    addRateToMap(Currency.EUR, new PrivatBankCurrencyService(), getInfoMap, userSettings);
-                }
+            if (userSettings.isEuro()) {
+                addRateToMap(Currency.EUR, service, getInfoMap, userSettings);
             }
+
 
             String text = getInfoMap.printInfo();
             message = Utils.createMessage(text, chatId);
@@ -76,18 +67,20 @@ public class GetInfo {
         return message;
     }
 
-    public static void addRateToMap(Currency currencyEnum, CurrencyService bankAPIService, CustomHashMap<String, String> getInfoMap , UserSettings userSettings) {
-        Currency currency = currencyEnum;
-        if(!bankAPIService.getClass().equals(NBUCurrencyService.class)) {
-            getInfoMap.put(currency.toString(), "" + currency);
-            String rateBuy = roundedRate(new PrivatBankCurrencyService().getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
-            getInfoMap.put("rateBuy" + currency, rateBuy);
-            String rateSell = roundedRate(bankAPIService.getRateSell(currencyEnum), userSettings.getNumberOfDecimalPlaces());
-            getInfoMap.put("rateSell"+ currency, rateSell);
-        } else {
-            getInfoMap.put(currencyEnum.toString(), "" + currency);
-            String rate = roundedRate(bankAPIService.getRateBuy(currency), userSettings.getNumberOfDecimalPlaces());
+    public static void addRateToMap(Currency currencyEnum, CurrencyService bankAPIService, CustomHashMap<String, String> getInfoMap, UserSettings userSettings) {
+        String currency = currencyEnum.toString();
+        int decimal = userSettings.getNumberOfDecimalPlaces();
+
+        if (bankAPIService.getClass().equals(NBUCurrencyService.class)) {
+            getInfoMap.put(currency, currency);
+            String rate = roundedRate(new NBUCurrencyService().getRate(currencyEnum), decimal);
             getInfoMap.put("rate" + currency, rate);
+        } else {
+            getInfoMap.put(currency, currency);
+            String rateBuy = roundedRate(bankAPIService.getRateBuy(currencyEnum), decimal);
+            getInfoMap.put("rateBuy" + currency, rateBuy);
+            String rateSell = roundedRate(bankAPIService.getRateSell(currencyEnum), decimal);
+            getInfoMap.put("rateSell" + currency, rateSell);
         }
     }
 
@@ -100,7 +93,7 @@ public class GetInfo {
         double decimal = Math.pow(10d, numberOfDecimals);
         StringBuilder result = new StringBuilder(Double.toString(Math.round(rate * decimal) / decimal));
 
-        if(result.length() < result.toString().split("\\.")[0].length() + 1 + numberOfDecimals) {
+        if (result.length() < result.toString().split("\\.")[0].length() + 1 + numberOfDecimals) {
             while (result.length() != 3 + numberOfDecimals)
                 result.append("0");
         }
@@ -127,7 +120,7 @@ class CustomHashMap<K, V> {
             V value = entry.getValue();
 
             if (key.equals("bankName")) {
-                sb.append("Курс в ").append(value).append(":\n");
+                sb.append("Курс від ").append(value).append(":\n");
             } else if (key.equals("USD") || key.equals("EUR")) {
                 sb.append("\n").append(value).append("/UAH\n");
             } else if (key.equals("rateUSD") || key.equals("rateEUR")) {
