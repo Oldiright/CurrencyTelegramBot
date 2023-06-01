@@ -66,7 +66,7 @@ public class GetInfo {
                 }
             }
 
-            String text = getInfoMap.toString();
+            String text = getInfoMap.printInfo();
             message = Utils.createMessage(text, chatId);
             ArrayList<ArrayList<InlineKeyboardButton>> buttons = new ArrayList<>();
             buttons.add(Utils.createButtonForColumnsKeyboard(MESSAGE_TO_START, TO_START));
@@ -122,7 +122,7 @@ class CustomHashMap<K, V> {
         map.put(key, value);
     }
 
-    public String toString() {
+    public String printInfo() {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<K, V> entry : map.entrySet()) {
             K key = entry.getKey();
