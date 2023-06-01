@@ -18,11 +18,6 @@ public class GetInfo {
     public static final String TITLE = "Get Info";
     private static final String TO_START = "To Start";
     private static final String MESSAGE_TO_START = "До головного меню";
-
-//    private static final String NBU = "НБУ";
-//    private static final String MONO = "МоноБанк";
-//    private static final String PRIVAT = "ПриватБанк";
-
     private static final String[] NBU = {"NBU", "НБУ"};
     private static final String[] MONO = {"Mono", "МоноБанк"};
     private static final String[] PRIVAT = {"Privat", "ПриватБанк"};
