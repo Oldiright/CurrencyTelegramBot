@@ -98,16 +98,14 @@ public class GetInfo {
     public static String roundedRate(double rate, int numberOfDecimals) {
 
         double decimal = Math.pow(10d, numberOfDecimals);
-        String result = Double.toString(Math.round(rate * decimal) / decimal);
+        StringBuilder result = new StringBuilder(Double.toString(Math.round(rate * decimal) / decimal));
 
-        if(result.length() < result.split("\\.")[0].length() + 1 + numberOfDecimals) {
+        if(result.length() < result.toString().split("\\.")[0].length() + 1 + numberOfDecimals) {
             while (result.length() != 3 + numberOfDecimals)
-                result = result + "0";
+                result.append("0");
         }
-
-        return result;
+        return result.toString();
     }
-
 }
 
 
