@@ -1,5 +1,6 @@
 package currency.nbu;
 
+import currency.BankAPI;
 import currency.nbu.dto.NBUCurrencyItem;
 import currency.Currency;
 import currency.CurrencyService;
@@ -12,7 +13,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class NBUCurrencyService implements CurrencyService {
-    private final static String url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
     private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     List<NBUCurrencyItem> list;
@@ -20,7 +20,7 @@ public class NBUCurrencyService implements CurrencyService {
     private void getExchangeRates(){
         String rates;
         try {
-            rates = Jsoup.connect(url)
+            rates = Jsoup.connect(BankAPI.NBU)
                     .ignoreContentType(true)
                     .get()
                     .text();
