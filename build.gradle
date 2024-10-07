@@ -1,5 +1,6 @@
 plugins {
-    id 'java'
+    id 'application'
+
 }
 
 group 'org.example'
@@ -25,6 +26,16 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+application {
+    // Define the main class for the application.
+    mainClass = 'telegram.TelegramApp'
+}
+
 
 test {
     useJUnitPlatform()

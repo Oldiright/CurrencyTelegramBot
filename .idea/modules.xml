@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CurrencyTelegramBot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/CurrencyTelegramBot.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/old.CurrencyTelegramBot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/old.CurrencyTelegramBot.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.example.CurrencyTelegramBot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/org.example.CurrencyTelegramBot.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/telegram_bot_project_group2_last_version2.CurrencyTelegramBot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/telegram_bot_project_group2_last_version2.CurrencyTelegramBot.main.iml" />
     </modules>
