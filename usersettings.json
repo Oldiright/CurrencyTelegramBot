@@ -14,5 +14,13 @@
     "usd": false,
     "alertTimes": "09",
     "needAlertTimes": true
+  },
+  "437726230": {
+    "NumberOfDecimalPlaces": 2,
+    "bankName": "Mono",
+    "euro": true,
+    "usd": true,
+    "alertTimes": "13",
+    "needAlertTimes": false
   }
 }

@@ -42,13 +42,15 @@ public class CurrencyTelegramBot extends TelegramLongPollingCommandBot {
     @Override
     public String getBotUsername() {
 
-        return new BotConstants().botInit().getBotName();
+        String getenv = System.getenv("BOT_NAME");
+                return getenv;
     }
     @Override
     public String getBotToken() {
-
-        return new BotConstants().botInit().getBotToken();
+        String getenv = System.getenv("BOT_TOKEN");
+        return getenv;
     }
+
     @Override
     public void processNonCommandUpdate(Update update) {
         Long chatId = Utils.getChatId(update);
