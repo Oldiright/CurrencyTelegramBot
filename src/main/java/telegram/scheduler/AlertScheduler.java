@@ -19,7 +19,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class AlertScheduler {
 
-    ConcurrentHashMap<String, ConcurrentHashMap<Long, UserSettings>>  scheduler;
+   private ConcurrentHashMap<String, ConcurrentHashMap<Long, UserSettings>>  scheduler;
 
 
 
@@ -32,26 +32,28 @@ public class AlertScheduler {
          ScheduledExecutorService scheduledSendMessage = Executors.newScheduledThreadPool(1);
 
          scheduledSendMessage.scheduleAtFixedRate(() -> {
-             String hourRightNow = String.valueOf(LocalDateTime.now().getHour());
+             LocalDateTime localDateTimeNow = LocalDateTime.now();
+             String hourRightNow = String.valueOf((localDateTimeNow.getHour()));
 
              //в цикле проверяем целые часы и запускаем тот же процесс расписания
              for (int i = 9; i < 19; i++) {
 
-                 if (LocalDateTime.now().getHour() == i
-                         && LocalDateTime.now().getMinute() == 0
-                         && LocalDateTime.now().getSecond() == 0)
+                 if (localDateTimeNow.getHour() == i && localDateTimeNow.getMinute() == 0)
 
                      //этот код не менял (рассылка) (переменную hourRightNow можно убрать, она равна - "" + i)
                      if (alertScheduler.getScheduler().containsKey(hourRightNow)) {
                          Set<Long> ourChats = alertScheduler.getScheduler().get(hourRightNow).keySet();
-                         System.out.println(ourChats);
 
                          for (Long chatId : ourChats) {
-                             try {
-                                 currencyTelegramBot.executeAsync(GetInfo.infoMessage(Utils.createUtilUpdate("Get Info"), chatId, alertScheduler.getScheduler().get(hourRightNow).get(chatId)));
-                             } catch (TelegramApiException e) {
-                                 throw new RuntimeException(e);
+                             if(alertScheduler.scheduler.get(hourRightNow).get(chatId).getLastAlert() !=localDateTimeNow.getDayOfMonth()) {
+                                 alertScheduler.scheduler.get(hourRightNow).get(chatId).setLastAlert(localDateTimeNow.getDayOfMonth());
+                                 try {
+                                     currencyTelegramBot.executeAsync(GetInfo.infoMessage(Utils.createUtilUpdate("Get Info"), chatId, alertScheduler.getScheduler().get(hourRightNow).get(chatId)));
+                                 } catch (TelegramApiException e) {
+                                     throw new RuntimeException(e);
+                                 }
                              }
+
                          }
                      }
              }

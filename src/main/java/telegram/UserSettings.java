@@ -2,6 +2,9 @@ package telegram;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 public class UserSettings {
 
@@ -11,6 +14,7 @@ public class UserSettings {
     private boolean usd;
     private String alertTimes;
     private boolean needAlertTimes;
+    private int lastAlert;
 
 
     public UserSettings() {
